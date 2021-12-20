@@ -1,5 +1,259 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <top></top>
+    <div class="container">
+      <div class="top">
+        <div class="left">
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(cid, index) in pid"
+                  :key="index"
+                  @click="tabClick(index)"
+                  >{{ cid }}</el-dropdown-item
+                >
+                <p>{{ cid }}</p>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div class="right">
+          <p>筛选器</p>
+        </div>
+      </div>
+      <div class="goods">
+        <goodslist :goodslist="showGoods"></goodslist>
+        <div class="block">
+          <el-pagination style="margin-bottom:5%;"  layout="prev, pager, next" :current-page='current' :page-sizes="[20, 40]" :hide-on-single-page='true' @next-click='next' @prev-click='prev'
+      :page-size="20" :total="(total < 20) && (page!= 2) ? 20 : 40">
+          </el-pagination>
+        </div>
+      </div>
+      <div class="category">
+        <el-menu
+          style="border: none"
+          :default-active="activeIndex2"
+          class="el-menu-demo"
+          mode="vertical"
+          @select="handleSelect"
+          background-color="rgb(18,18,18)"
+          text-color="#C0C4CC"
+          active-text-color="#D351E1"
+        >
+          <el-submenu index="1">
+            <template #title>当下最流行</template>
+            <el-menu-item
+              v-for="(item, index1) in categories1.children"
+              :key="index1"
+              @click="getGoods(item.id)"
+              :index="'1-' + index1"
+              >{{ item.name }}</el-menu-item
+            >
+          </el-submenu>
+
+          <el-submenu index="2">
+            <template #title>夏季优惠</template>
+            <el-menu-item
+              v-for="(sub, index2) in categories2.children"
+              :key="index2"
+              @click="getGoods(sub.id)"
+              :index="'2-' + index2"
+              >{{ sub.name }}</el-menu-item
+            >
+          </el-submenu>
+        </el-menu>
+      </div>
+    </div>
   </div>
 </template>
+<script>
+import top from "./home/ChildComps/top.vue";
+import { ref, reactive, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import { getCategory, getCategoryGoods } from "../network/category";
+import goodslist from "../views/category/goodslist.vue";
+export default {
+  name: "about",
+  setup() {
+    const handleOpen = (key, keyPath) => {
+      console.log(key, keyPath);
+    };
+    const handleClose = (key, keyPath) => {
+      console.log(key, keyPath);
+    };
+    const router = useRouter();
+    let activeKey = ref(0);
+    let active = ref(1);
+    let activeName = ref(["1"]);
+    const categories1 = ref([]);
+    const categories2 = ref([]);
+    const pid = ref(["销量排序", "价格排序", "评价排序"]);
+    const page = ref();
+    const total = ref()
+    let isTrue = ref(false);
+    //当前的排序
+    let currentOrder = ref("sales");
+    //当前的分类ID
+    let currentCid = ref(0);
+    const goods = reactive({
+      sales: { page: 1, list: [] },
+      price: { page: 1, list: [] },
+      comments_count: { page: 1, list: [] },
+    });
+    const showGoods = computed(() => {
+      total.value = goods[currentOrder.value].list.length
+      return goods[currentOrder.value].list;
+
+    });
+    const init = () => {
+      getCategoryGoods("sales", currentCid.value).then((res) => {
+        goods.sales.list = res.goods.data;
+        
+      });
+      getCategoryGoods("price", currentCid.value).then((res) => {
+        goods.price.list = res.goods.data;
+      });
+      getCategoryGoods("comments_count", currentCid.value).then((res) => {
+        goods.comments_count.list = res.goods.data;
+      });
+    };
+    onMounted(() => {
+      getCategory().then((res) => {
+        categories1.value = res.categories[0];
+        categories2.value = res.categories[1];
+      });
+      init();
+      page.value = goods[currentOrder.value].page;
+      
+    });
+    //下一页
+    const next = () =>{
+      page.value = goods[currentOrder.value].page + 1;
+       getCategoryGoods(currentOrder.value, 0 , page.value).then((res) => {
+          goods[currentOrder.value].list = res.goods.data;
+          goods[currentOrder.value].page += 1;
+          
+        });
+    }
+    //上一页
+    const prev = () =>{
+      page.value = goods[currentOrder.value].page - 1;
+       getCategoryGoods(currentOrder.value, 0 , page.value).then((res) => {
+          goods[currentOrder.value].list = res.goods.data;
+          goods[currentOrder.value].page -= 1;
+          
+        });
+    }
+    //点击页码
+    // const currentchange = (id)=>{
+    //   page.value = id;
+    //    getCategoryGoods(currentOrder.value, 0 , page.value).then((res) => {
+    //       goods[currentOrder.value].list = res.goods.data;
+    //       goods[currentOrder.value].page = page.value;
+    //       console.log(res.goods.data);
+    //     });
+    // }
+    
+    //排序选项卡
+    const tabClick = (index) => {
+      let orders = ["sales", "price", "comments_count"];
+      currentOrder.value = orders[index];
+      getCategoryGoods(currentOrder.value, currentCid.value).then((res) => {
+        goods[currentOrder.value].list = res.goods.data;
+        
+      });
+    };
+    //通过分类得到商品
+    const getGoods = (cid) => {
+      currentCid.value = cid;
+      init();
+      
+    };
+    const current = page.value
+
+    return {
+      handleOpen,
+      handleClose,
+      current,
+    next,
+    prev,
+    total,
+    current,
+      page,
+      pid,
+      activeKey,
+      activeName,
+      categories1,
+      categories2,
+      active,
+      tabClick,
+      currentOrder,
+      currentCid,
+      getGoods,
+      goods,
+      showGoods,
+      isTrue,
+      itemClick: (id) => {
+        router.push({ path: "/detail", query: { id } });
+      },
+    };
+  },
+  components: { top, goodslist },
+  methods: {},
+};
+</script>
+<style scoped lang="scss">
+.container {
+  position: absolute;
+  top: 16%;
+  width: 74%;
+  margin-top: 1.5%;
+  margin-left: 13%;
+  z-index: -1;
+  transition: all 0.5s;
+  .goods {
+    width: 83%;
+    float: left;
+    
+  }
+  .category {
+    width: 17%;
+    float: right;
+  }
+  .top {
+    width: 100%;
+    height: 4vh;
+
+    .right {
+      float: right;
+      width: 17%;
+      height: 100%;
+      // border-bottom: 1px solid #303133;
+
+      p {
+        color: #fff;
+      }
+    }
+    .left {
+      float: left;
+      .el-dropdown-link {
+        cursor: pointer;
+        color: #c0c4cc;
+      }
+      .el-icon-arrow-down {
+        font-size: 12px;
+      }
+      .demonstration {
+        display: block;
+        color: var(--el-text-color-secondary);
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+</style>
