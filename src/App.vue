@@ -1,12 +1,36 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+     <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component"  v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <component :is="Component"  v-if="!$route.meta.keepAlive"/>
+  </router-view> 
+    <navbar></navbar>
   </div>
-  <router-view/>
 </template>
+<script>
+import navbar from "@/components/common/navbar/navbar.vue";
+export default {
+  name: "App",
+  components:{
+navbar
+  },
+  data() {
+    return {
+      
+    };
+  },
+};
 
+
+</script>
 <style lang="scss">
+@import "./assets/css/base.css";
+@import "./assets/css/iconfont.css";
+body{
+    background:rgb(18,18,18);
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -16,14 +40,21 @@
 }
 
 #nav {
-  padding: 30px;
+  padding: 0px;
+  background: #f6f6f6;
+  display: flex;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
 
   a {
     font-weight: bold;
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #d351e1;
     }
   }
 }
