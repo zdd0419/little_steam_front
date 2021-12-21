@@ -178,7 +178,7 @@ export default {
     return {
       handleOpen,
       handleClose,
-      current,
+
     next,
     prev,
     total,

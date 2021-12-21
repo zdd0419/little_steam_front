@@ -130,14 +130,17 @@
             <span style="color: #fff; text-align: left; margin: 5% 0 5% 0"
               >￥{{ detail.price }}</span
             >
-            <div class="buynow">
+            <div class="buynow" @click="gotodetail(item.id)" >
               {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
             </div>
-            <div class="cart" @click="handleAddCart(detail.id)">
-              <img
-                src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%B7%BB%E5%8A%A0.png"
-              />添至愿望清单
+            <div class="buynow" @click="handleAddCart(detail.id)">
+              加入购物车
             </div>
+          <div class="cart" @click="handleAddWishlist(detail.id)">
+            <img
+                src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%B7%BB%E5%8A%A0.png"
+            />加入心愿单
+          </div>
           </div></el-affix
         >
       </div>
@@ -167,7 +170,7 @@ export default {
       pics: [],
     });
     const gotodetail = (id) => {
-      router.push({ path: "/detail", query: { id } });
+      router.push({ path: "/buy", query: { id } });
       setTimeout(() => {
         router.go(0);
       }, 200);
@@ -186,6 +189,20 @@ export default {
         }
       });
     };
+    const handleAddWishlist = (id) => {
+      ElMessage({
+        showClose: true,
+        message: "添加心愿单成功！！",
+        type: "success",
+      });
+      addList({ goods_id: id, num: 1 }).then((res) => {
+        if (res.status == "200" || res.status == "204") {
+          //设置store中cartCount
+          store.dispatch("updateCart");
+
+        }
+      });
+    };
     onMounted(() => {
       id.value = route.query.id;
       getDetail(id.value).then((res) => {
@@ -200,6 +217,7 @@ export default {
       id,
       gotodetail,
       handleAddCart,
+      handleAddWishlist
     };
   },
   components: {
@@ -246,7 +264,7 @@ export default {
         border: 1px #909399 solid;
         color: #fff;
         width: 100%;
-        height: 3em;
+        height: 4em;
         display: flex;
         font-size: 12px;
         text-align: center;
@@ -254,7 +272,7 @@ export default {
         background-color: white;
         background-color: rgba(0, 0, 0, 0);
         transition: all 0.5s;
-        border-radius: 3px;
+        border-radius: 5px;
         img {
           position: relative;
           top: 25%;
