@@ -54,7 +54,7 @@ setup(){
         router.push({path:'/login/sane'})
     }
 return{
-toSane
+    toSane
 }
 },
 components:{
