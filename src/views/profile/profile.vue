@@ -55,7 +55,12 @@
     </el-tab-pane>
     
     <el-tab-pane label="我的游戏" name="third">
-      <el-empty v-if="user.game_count>0" style="margin-top:5%" description="您还没有购买游戏~">
+
+      <div v-if= "user.game_count>0" class="category" v-for="item in gameList" :key="item.id" @click="gotodetail(item.id)">
+        <img :src="'http://127.0.0.1:8000' +item.surface" alt=""><div class="content"><p>{{ item.game_name }}</div>
+      </div>
+
+      <el-empty v-if="user.game_count=0" style="margin-top:5%" description="您还没有购买游戏~">
       <router-link v-if="user.game_count>0" to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
       </el-empty></el-tab-pane>
     <el-tab-pane label="好友" name="fourth"><div style="margin-top:5%">
@@ -103,7 +108,7 @@
 </template>
 
 <script>
-import { logout ,getUser,putUserinfo} from "../../network/user";
+import {logout, getUser, putUserinfo, getWarehouse} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
@@ -123,13 +128,19 @@ setup(){
     
     
     const state = reactive({
-      user:{}
+      user:{},
+      gameList: []
     })
     onMounted(()=>{
       getUser(window.localStorage.getItem("user_id")).then(res=>{
-        console.log(res.data);
-        state.user = res.data;
+        //console.log(res.data);
+        state.user = res;
       })
+
+      getWarehouse(window.localStorage.getItem("user_id")).then(res=>{
+        state.gameList = res;
+      })
+
       
     })
     const open = () => {
