@@ -63,15 +63,27 @@
       <el-empty v-if="gameList.length==0" style="margin-top:5%" description="您还没有购买游戏~">
       <router-link v-if="gameList.length==0" to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
       </el-empty></el-tab-pane>
-    <el-tab-pane label="好友" name="fourth"><div style="margin-top:5%">
-    <h4>甜蜜的孤独</h4>
-    <el-divider content-position="center">SANE GAME</el-divider>
-    <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>
-    <br>
-    <span style="color:#C0C4CC;font-size:15px">添加好友，和他们一起聊天, 或分享美妙游戏时光。 </span>
-  </div><el-button style="background-color:white;
-   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button></el-tab-pane>
-
+<!--    <el-tab-pane label="好友" name="fourth"><div style="margin-top:5%">-->
+<!--    <h4>甜蜜的孤独</h4>-->
+<!--    <el-divider content-position="center">SANE GAME</el-divider>-->
+<!--    <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>-->
+<!--    <br>-->
+<!--    <span style="color:#C0C4CC;font-size:15px">添加好友，和他们一起聊天, 或分享美妙游戏时光。 </span>-->
+<!--  </div><el-button style="background-color:white;-->
+<!--   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button></el-tab-pane>-->
+      <el-tab-pane label="好友" name="fourth">
+        <div  class=" " v-for="item in friendList" :key="item.id">
+          <div class="content"><p></p >{{item.nickname}}</div>
+        </div>
+        <div style="margin-top:5%">
+          <h4>甜蜜的孤独</h4>
+          <el-divider content-position="center">SANE GAME</el-divider>
+          <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>
+          <br>
+          <span style="color:#C0C4CC;font-size:15px">添加好友，和他们一起聊天, 或分享美妙游戏时光。 </span>
+        </div><el-button style="background-color:white;
+ background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button>
+      </el-tab-pane>
       <el-tab-pane label="钱包" name="fifth"><div style="margin-top:5%">
         <img src="@/assets/images/balance.png" style="width:150px; height:150px; border-radius:50%; ">
         <br>
@@ -126,7 +138,7 @@
 </template>
 
 <script>
-import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog} from "../../network/user";
+import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
@@ -153,6 +165,9 @@ setup(){
       gameList: [],
       BalanceLogData: []
     })
+  const state2 = reactive({
+    friendList :[],
+  })
     onMounted(()=>{
       getUser(window.localStorage.getItem("user_id")).then(res=>{
         //console.log(res.data);
@@ -170,6 +185,10 @@ setup(){
         // alert(state.gameList.length)
         console.log(state)
 
+      })
+
+      friendID(window.localStorage.getItem("user_id")).then(res => {
+        state2.friendList=res
       })
 
       getBalanceLog(window.localStorage.getItem("user_id")).then(res=> {
@@ -204,7 +223,8 @@ setup(){
       };
 return{
 activeName,...toRefs(state),
-open
+open,
+  ...toRefs(state2)
 }
 },
 components:{
@@ -217,6 +237,15 @@ methods:{
 
 </script>
 <style>
+
+.content{
+  width:40%;
+  height: 40px;
+  /*display:table;*/
+  border-style: solid;
+  border-color: gray;
+  margin:3% 20% 0 20%;
+}
 
 .userinfo{
   position: absolute;

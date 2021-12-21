@@ -154,10 +154,13 @@ const validatePass2 = (rule, value, callback) => {
 });
     //触发登录方法
     const handleRegister = () => {
-      registerUser2.name = registerUser.name
-      registerUser2.password = registerUser.password
+      registerUser2.type = "register"
+      registerUser2.name = registerUser.value.name
+      registerUser2.password = registerUser.value.password
+      alert(registerUser2.name)
       //先验证 在提交
-      register(registerUser2.value).then((res) => {
+      register(registerUser2).then((res) => {
+        alert(registerUser2.name)
         console.log(res);
         registerUser.name="";
         registerUser.password = "";
