@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/home/Home.vue'
 import wishcar from "@/views/wishlist/wishcar";
+import myOrder from "@/views/order/myOrder";
+import buy from "@/views/detail/buy";
+import pay from "@/views/detail/pay";
+import denote from "@/views/detail/denote";
 const index = () =>
     import ('../views/home/index.vue')
 const category = () =>
@@ -104,6 +108,56 @@ const routes = [{
         component: wishcar,
         meta: {
             title: 'SANE GAME-心愿单',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
+    {
+        path: '/myOrder',
+        name: 'myOrder',
+        component: myOrder,
+        meta: {
+            title: 'SANE GAME-订单',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
+    {
+        path: '/buy',
+        name: 'buy',
+        component: buy,
+        meta: {
+            title: 'SANE GAME-购买',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
+    {
+        path: '/pay',
+        name: 'pay',
+        component: pay,
+        meta: {
+            title: 'SANE GAME-支付',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
+    {
+        path: '/denote',
+        name: 'denote',
+        component: denote,
+        meta: {
+            title: 'SANE GAME-赠送好友',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
+    {
+        path: '/friends',
+        name: 'friends',
+        component: denote,
+        meta: {
+            title: 'SANE GAME-好友圈',
             isAuthRequired: true,
             // keepAlive: true
         }
