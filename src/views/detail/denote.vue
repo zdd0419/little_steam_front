@@ -31,7 +31,7 @@
 <!--          </div>-->
           <div class="goods">
             <p>选择好友</p>
-            <goods :category1='goods.category1' :category2='goods.category2' :category3='goods.category3'></goods>
+<!--            <goods :category1='goods.category1' :category2='goods.category2' :category3='goods.category3'></goods>-->
           </div>
         </div>
 
