@@ -127,12 +127,15 @@
                 border-radius: 5px;
               "
           >
-            <p style="margin: 10% 0 10% 0">{{ detail.game_name}}</p>
+            <div class="container" v-for="item in tags">
+              <p  >{{ item.category}}({{item.category_hot}})</p>
+            </div>
+
           </div>
           <span style="color: #fff; text-align: left; margin: 5% 0 5% 0"
           >￥{{ detail.price }}</span
           >
-          <div class="buynow">
+          <div class="buynow" @click="gotoBuy(id)">
             {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
           </div>
           <div class="cart" @click="handleAddCart(detail.id)">
@@ -148,7 +151,7 @@
 </template>
 
 <script>
-import { getDetail } from "../../network/detail";
+import {getDetail, getTags} from "../../network/detail";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, toRefs } from "vue";
 import { addCart } from "../../network/cart";
@@ -168,7 +171,7 @@ export default {
     // });
     let game = reactive({
       detail: {},
-      like_goods: [],
+      tags: [],
       pics: [],
     });
     const gotodetail = (id) => {
@@ -191,18 +194,33 @@ export default {
         }
       });
     };
+    const gotoBuy = (id) => {
+      router.push({ path: "/buy", query: { id } });
+    };
     onMounted(() => {
       id.value = route.query.id;
-      getDetail(1).then((res) => {
+      //id.value = 1;
+      alert(id.value);
+      getDetail(id.value).then((res) => {
         game.detail = res
         console.log("---game_name---")
       });
+
+      getTags(id.value).then((res) => {
+        game.tags = res
+        console.log("---game_name---")
+        alert(game.tags[0].category)
+        // console.log(game.game_images[0].pic_url);
+        // alert(game.game_name);
+      });
+
     });
     return {
       ...toRefs(game),
       id,
       gotodetail,
       handleAddCart,
+      gotoBuy
     };
   },
   components: {
@@ -219,7 +237,7 @@ export default {
   // height: 200%;
   z-index: -1;
   .container {
-    width: 74%;
+    width: 80%;
     height: auto;
     margin: 0 13% 0 13%;
 
