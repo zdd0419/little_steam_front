@@ -57,7 +57,7 @@
     <el-tab-pane label="我的游戏" name="third">
 
       <div v-if= "user.game_count>0" class="category" v-for="item in gameList" :key="item.id" @click="gotodetail(item.id)">
-        <img :src="'http://127.0.0.1:8000' +item.surface" alt=""><div class="content"><p>{{ item.game_name }}</div>
+        <img :src="'http://127.0.0.1:8000' +item.surface" alt=""><div class="content"><p></p>{{ item.game_name }}</div>
       </div>
 
       <el-empty v-if="user.game_count=0" style="margin-top:5%" description="您还没有购买游戏~">
