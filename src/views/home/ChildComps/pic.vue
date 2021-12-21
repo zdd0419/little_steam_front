@@ -21,10 +21,10 @@
         <div class="buynow" @click="gotodetail(detail.id)" style="width: 100px">
           {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
         </div>
-        <div @click="handleAddCart(detail.id)" style="margin-left: 5px;line-height: 3em">
+        <div @click="handleAddWish(detail.game)" style="margin-left: 5px;line-height: 3em">
           <el-button type="success" icon="el-icon-shopping">加入心愿单</el-button>
         </div>
-        <div @click="handleAddCart(detail.id)" style="margin-left: 5px;line-height: 3em">
+        <div @click="handleAddCart(detail.game)" style="margin-left: 5px;line-height: 3em">
           <el-button type="primary" icon="el-icon-shopping">加入购物车</el-button>
         </div>
 
@@ -37,7 +37,7 @@
 import { ref, reactive, onMounted, onUpdated, onBeforeUpdate } from "vue";
 import {useRouter} from 'vue-router'
 import { ElMessage } from "element-plus";
-import { addCart } from "../../../network/cart";
+import {addCart, addWish} from "../../../network/cart";
 import { useStore } from "vuex";
 export default {
   name: "",
@@ -72,18 +72,17 @@ export default {
      }
      //原来的添加到购物车
      const handleAddCart = (id) => {
-      ElMessage({
-            showClose: true,
-            message: "添加购物车成功！！",
-            type: "success",
-          });
-      addCart({ goods_id: id, num: 1 }).then((res) => {
-        if (res.status == "200" || res.status == "204") {
-          //设置store中cartCount
-          store.dispatch("updateCart");
-          
-        }
-      });
+       addCart({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
+         if (res.status == "201" || res.status == "204") {
+           //设置store中cartCount
+           store.dispatch("updateCart");
+         }
+       });
+      // ElMessage({
+      //       showClose: true,
+      //       message: "添加购物车成功！！",
+      //       type: "success",
+      //     })
     };
     //最新添加到心愿单
     const handleAddWish=(id)=>{
@@ -92,15 +91,15 @@ export default {
         message: "添加心愿单成功！！",
         type: "success",
       });
-      addCart({ goods_id: id, num: 1 }).then((res) => {
-        if (res.status == "200" || res.status == "204") {
+      addWish({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
+        if (res.status == "201" || res.status == "204") {
           //设置store中cartCount
-          store.dispatch("updateCart");
+          store.dispatch("updateWish");
 
         }
       });
     }
-    return { logo, init ,gotodetail,handleAddCart};
+    return { logo, init ,gotodetail,handleAddCart,handleAddWish};
   },
   components: {},
   methods: {},

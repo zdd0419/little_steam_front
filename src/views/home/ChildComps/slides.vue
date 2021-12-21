@@ -35,7 +35,7 @@ setup(props){
      const pics = ref()
     const  getid=(cid)=>{ getDetail(cid).then((res)=>{
       detail.value = res;
-      pics.value = res.images[1].pic_url;
+      pics.value = res.game_images[1].pic_url;
       // alert(pics.value);
      })}
   // const getid=(cid)=>{
