@@ -1,31 +1,30 @@
 <template>
   <div class="pic" >
-    <img :src="pics[0]" alt="" />
-    <div class="logo">
-      <transition
-        name="logo"
-        enter-active-class="animate__animated animate__fadeInRight animate__delay-0.2s"
-      >
-        <img
-          v-if="logo == false ? (logo = true) : (logo = false)"
-          :src="pics[4]"
-        />
-      </transition>
-    </div>
-    <div class="content" style="width: 500px">
-      <span>{{ detail.title }}</span>
-      <p>{{ detail.description }}</p>
+    <img :src="pics" alt="" />
+<!--    <div class="logo">-->
+<!--      <transition-->
+<!--        name="logo"-->
+<!--        enter-active-class="animate__animated animate__fadeInRight animate__delay-0.2s"-->
+<!--      >-->
+<!--&lt;!&ndash;        <img&ndash;&gt;-->
+<!--&lt;!&ndash;          v-if="logo == false ? (logo = true) : (logo = false)"&ndash;&gt;-->
+<!--&lt;!&ndash;          :src="pics[1]"&ndash;&gt;-->
+<!--&lt;!&ndash;        />&ndash;&gt;-->
+<!--        <img :src="pics[0]">-->
+<!--      </transition>-->
+<!--    </div>-->
+    <div class="content" style="width: 850px">
+      <span>{{ detail.game_name }}</span>
+      <p>{{ detail.game_description }}</p>
       <h4>{{ detail.price != 0 ? "￥" + detail.price : "免费" }}</h4>
       <div class="shopping">
         <div class="buynow" @click="gotodetail(detail.id)" style="width: 100px">
           {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
         </div>
-        <div class="cart" @click="handleAddCart(detail.id)" style="width: 150px">
-          <img
-            src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%B7%BB%E5%8A%A0.png"
-          /><p  style="width: 100px" >加入心愿单</p>
+        <div @click="handleAddCart(detail.id)" style="margin-left: 5px;line-height: 3em">
+          <el-button type="success" icon="el-icon-shopping">加入心愿单</el-button>
         </div>
-        <div class="cart" @click="handleAddCart(detail.id)">
+        <div @click="handleAddCart(detail.id)" style="margin-left: 5px;line-height: 3em">
           <el-button type="primary" icon="el-icon-shopping">加入购物车</el-button>
         </div>
 
@@ -63,6 +62,7 @@ export default {
     const init = () => {
       logo.value = !logo.value;
     };
+    // console.log(pics.value)
     onUpdated(() => {
       init();
     });
@@ -131,7 +131,7 @@ export default {
   }
   .shopping {
     position: absolute;
-    width: 80%;
+    width: 50%;
     top: 170px;
     display: flex;
     .buynow {
@@ -178,15 +178,15 @@ export default {
   .content {
     margin-left: 5%;
     position: absolute;
-    top: 60%;
-    width: 30%;
+    top: 55%;
+    width: 60%;
     span {
-      font-size: 60%;
+      font-size: 120%;
     }
     p {
-      margin-top: 6%;
-      margin-bottom: 6%;
-      font-size: 120%;
+      margin-top: 3%;
+      margin-bottom: 3%;
+      font-size: 100%;
       line-height: 160%;
     }
   }
