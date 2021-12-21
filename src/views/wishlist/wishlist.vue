@@ -1,20 +1,19 @@
 <template>
   <div>
-    <div class="container" v-for="item in wishlist" :key="item.id">
-      <img :src="item.goods.data.cover_url" alt="" />
+    <div class="container" v-for="item in wishlist" :key="item.game.game">
+      <img :src="'http://127.0.0.1:8000'+ item.game.surface" alt="" />
       <div class="content">
-        <span
-        ><h2>{{ item.goods.data.title }}</h2></span
-        >
+        <span><h2>{{ item.game.game_name }}</h2></span>
+        <span><h4>{{ item.timestamp }}</h4></span>
         <div class="price">
-          <p>￥{{ item.goods.data.price }}</p>
+          <p>￥{{ item.game.price }}</p>
         </div>
       </div>
       <el-button
           class="delete"
           type="primary"
           @click="
-          deleteGood(item.id)
+          deleteGood(item.game.game)
         "
       >
         <img
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import { getCart, deleteCartItem } from "../../network/cart";
+import {getCart, deleteCartItem, getWish} from "../../network/cart";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, toRefs, computed } from "vue";
 import { ElLoading } from 'element-plus';
@@ -53,11 +52,11 @@ export default {
       checked: true,
     });
     const init = () => {
-      getCart("include=goods").then((res) => {
-        state.list = res.data;
-        state.result = res.data
-            .filter((item) => item.is_checked == 1)
-            .map((n) => n.id);
+      getWish(11).then((res) => {
+        state.list = res.wish_list;
+        // state.result = res.data
+        //     .filter((item) => item.is_checked == 1)
+        //     .map((n) => n.id);
       });
     };
 

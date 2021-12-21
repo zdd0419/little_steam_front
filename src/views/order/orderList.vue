@@ -1,33 +1,21 @@
 <template>
   <div>
-    <div class="container" v-for="item in orderList" :key="item.id">
-      <img :src="item.goods.data.cover_url" alt="" />
+    <div class="container" v-for="item in orderList" :key="item.game.game">
+      <img :src="'http://127.0.0.1:8000' + item.game.surface" alt="" />
       <div class="content">
-        <span
-        ><h2>{{ item.goods.data.title }}</h2></span
-        >
+        <span><h2>{{ item.game.game_name }}</h2></span>
+        <span><h6>买给用户：{{ item.beneficiary}}</h6></span>
+        <span><h6>下单时间：{{ item.order_time}}</h6></span>
         <div class="price">
-          <p>￥{{ item.goods.data.price }}</p>
+          <p>￥{{ item.actually_paid }}</p>
         </div>
       </div>
-      <el-button
-          class="delete"
-          type="primary"
-          @click="
-          deleteGood(item.id)
-        "
-      >
-        <img
-            src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E5%88%A0%20%E9%99%A4.png"
-            alt=""
-        />
-      </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { getCart, deleteCartItem } from "../../network/cart";
+import { getOrder } from "../../network/cart";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, toRefs, computed } from "vue";
 import { ElLoading } from 'element-plus';
@@ -52,38 +40,8 @@ export default {
       result: [], //id数组
       checked: true,
     });
-    const init = () => {
-      getCart("include=goods").then((res) => {
-        state.list = res.data;
-        state.result = res.data
-            .filter((item) => item.is_checked == 1)
-            .map((n) => n.id);
-      });
-    };
 
-    const deleteGood = (id) => {
-
-      deleteCartItem(id).then((res) => {
-        init();
-        const loading = ElLoading.service({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)',
-        });
-        setTimeout(() => {
-          loading.close();
-        }, 300);
-        setTimeout(() => {
-          router.go(0)
-        }, 200);
-
-
-      });
-
-    };
     return {
-      deleteGood,
       godetail,
       ...toRefs(state),
       fullscreenLoading
@@ -118,7 +76,7 @@ export default {
 
     display: flex;
     .price {
-      margin-left: 2%;
+      margin-right: 5%;
       margin-top: 0.5%;
       p {
         color: #fff;
