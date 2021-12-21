@@ -1,10 +1,15 @@
 import axios from 'axios';
 import router from "../router"
 export function request(config) {
+    // const instance = axios.create({
+    //         baseURL: 'http://47.98.196.209',
+    //         timeout: 5000
+    //     })
+
     const instance = axios.create({
-            baseURL: 'http://47.98.196.209',
-            timeout: 5000
-        })
+        baseURL: 'http://127.0.0.1:8000',
+        timeout: 5000
+    })
         //请求拦截
     instance.interceptors.request.use(config => {
             //如果又一个接口需要认证才能访问，就在这里统一配置

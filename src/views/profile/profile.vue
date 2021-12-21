@@ -1,19 +1,21 @@
 <template>
+
   <div>
     <div class="profile">
       <div class="filter">
         <div class="userinfo">
-<el-avatar :src="user.avatar? user.avatar : 'https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%88%91%E7%9A%84.png'" style="width:auto;height:100%"></el-avatar>
+<el-avatar :src="user.user_icon? user.user_icon : 'https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%88%91%E7%9A%84.png'" style="width:auto;height:100%"></el-avatar>
 <div class="content">
-  <h4>{{user.name}}</h4>
+  <h4>{{user.user_name}}</h4>
   <p>在线</p>
+
 </div>
         </div>
     <div class="container">
     <el-tabs v-model="activeName" @tab-click="handleClick" style="color:#fff">
     <el-tab-pane label="账号管理" name="first">
        <el-descriptions title="" direction="vertical" :column="4" border style="width:60%;margin:3% 20% 0 20%">
-  <el-descriptions-item label="用户名">{{user.name}} <el-button   type="text" @click="open"><el-image
+  <el-descriptions-item label="用户名">{{user.user_name}} <el-button   type="text" @click="open"><el-image
       style="width: 10%; height: 10%;float:left"
       src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E4%BF%AE%E6%94%B9.png"
       :fit="fit"></el-image>
@@ -34,10 +36,12 @@
     <el-tag size="small" style="background:#67C23A;color:#fff;border:none">正常</el-tag>
   </el-descriptions-item>
   <el-descriptions-item label="生日">{{user.created_at}}</el-descriptions-item>
+  <el-descriptions-item label="等级（积分）">{{user.user_level}}({{user.user_credit}})</el-descriptions-item>
+
 </el-descriptions>
   </el-tab-pane>
     <el-tab-pane label="修改头像" name="second">
-      <el-avatar :src="user.avatar? user.avatar : 'https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%88%91%E7%9A%84.png'" style="width:200px;height:200px;margin-top:3%"></el-avatar>
+      <el-avatar :src="user.user_icon? user.user_icon : 'https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%88%91%E7%9A%84.png'" style="width:200px;height:200px;margin-top:3%"></el-avatar>
        <el-upload
   class="avatar-uploader"
   action="https://jsonplaceholder.typicode.com/posts/"
@@ -50,8 +54,9 @@
 </el-upload>
     </el-tab-pane>
     
-    <el-tab-pane label="我的游戏" name="third"><el-empty style="margin-top:5%" description="您还没有购买游戏~">
-      <router-link to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
+    <el-tab-pane label="我的游戏" name="third">
+      <el-empty v-if="user.game_count>0" style="margin-top:5%" description="您还没有购买游戏~">
+      <router-link v-if="user.game_count>0" to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
       </el-empty></el-tab-pane>
     <el-tab-pane label="好友" name="fourth"><div style="margin-top:5%">
     <h4>甜蜜的孤独</h4>
@@ -59,14 +64,42 @@
     <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>
     <br>
     <span style="color:#C0C4CC;font-size:15px">添加好友，和他们一起聊天, 或分享美妙游戏时光。 </span>
-    
   </div><el-button style="background-color:white;
    background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button></el-tab-pane>
+
+
+      <Modal
+          v-model=showbalance
+          title="提示"
+          @on-ok="downtempok"
+          @on-cancel="downtempcancel"
+          ok-text="确定"
+          cancel-text="查看模板"
+      >
+        <p style="text-align:center">
+          <Icon type="ios-checkmark-circle-outline" size="30"/>
+        </p>
+      </Modal>
+
+      <el-tab-pane label="钱包" name="fifth"><div style="margin-top:5%">
+        <img src="@/assets/images/balance.png" style="width:150px; height:150px; border-radius:50%; ">
+        <br>
+        <br>
+        <span style="color:#C0C4CC;font-size:15px" >钱包余额：{{user.user_balance}}</span>
+        <br>
+
+      </div><el-button style="background-color:white;
+   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%" @click="showbalance=true">查看余额日志</el-button>
+      </el-tab-pane>
+
   </el-tabs>
   </div>
   </div>
   </div>
   </div>
+
+
+
 </template>
 
 <script>
@@ -77,7 +110,12 @@ import { onMounted,ref,reactive,toRefs,} from "vue";
  import { ElMessageBox } from 'element-plus';
   import { ElMessage } from 'element-plus';
 export default {
-name:'',
+  name:'',
+  data() {
+    return {
+      showbalance: false
+    };
+  },
 setup(){
   const activeName = ref('first');
   const router = useRouter();
@@ -88,7 +126,7 @@ setup(){
       user:{}
     })
     onMounted(()=>{
-      getUser().then(res=>{
+      getUser(window.localStorage.getItem("user_id")).then(res=>{
         console.log(res.data);
         state.user = res.data;
       })
