@@ -99,7 +99,7 @@ export default defineComponent({
     const handleSelect = (key, keyPath) => {};
     let noLogin = ref(true);
     const isLogin = () => {
-      if (window.localStorage.getItem("token")) {
+      if (window.localStorage.getItem("user_id")) {
         return (noLogin.value = false);
       }
     };
