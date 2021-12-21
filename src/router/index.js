@@ -4,6 +4,7 @@ import wishcar from "@/views/wishlist/wishcar";
 import buy from "@/views/detail/buy";
 import pay from "@/views/detail/pay";
 import denote from "@/views/detail/denote";
+import myOrder from "../views/order/myOrder";
 const index = () =>
     import ('../views/home/index.vue')
 const category = () =>
@@ -107,6 +108,15 @@ const routes = [{
         component: wishcar,
         meta: {
             title: 'SANE GAME-心愿单',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },{
+        path: '/orderlist',
+        name: 'orderlist',
+        component: myOrder,
+        meta: {
+            title: 'SANE GAME-订单',
             isAuthRequired: true,
             // keepAlive: true
         }

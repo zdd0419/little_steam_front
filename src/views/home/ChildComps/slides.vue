@@ -1,6 +1,10 @@
 <template>
+<!--  <meta name="referrer" content="no-referrer">-->
   <div>
-    <div class="item" v-for="item in slides" :key="item.id" @click="getid(item.id)"><img :src="item.cover" alt="" ><p>{{item.title}}</p> </div>
+    <div class="item" v-for="item in slides.slice(0,7)" :key="item.game" @click="getid(item.game)">
+      <img :src="'http://127.0.0.1:8000' + item.surface" alt="" >
+      <p>{{item.game_name}}</p>
+    </div>
     <pic :pics='pics' :detail='detail'></pic>
   </div>
 </template>
@@ -29,15 +33,16 @@ setup(props){
      }
      const detail = ref();
      const pics = ref()
-  const  getid=(cid)=>{ getDetail(cid).then((res)=>{
-     
-      detail.value = res.good;
-      pics.value = res.good.pics;
-      console.log(detail.value);
-      
+    const  getid=(cid)=>{ getDetail(cid).then((res)=>{
+      detail.value = res;
+      pics.value = res.game_images[1].pic_url;
+      // alert(pics.value);
      })}
+  // const getid=(cid)=>{
+  //      detail.value =
+  // }
      onMounted(()=>{
-        getid(22)
+        getid(1)
     })
      return {godetail,getid,detail,pics}
 }

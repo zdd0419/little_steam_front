@@ -45,7 +45,7 @@
       style="width: 7%; background: rgb(18, 18, 18)">
     <el-tabs >
       <!--            <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>-->
-      <router-link to="/shopcart"><a href="#"><span>订单</span></a></router-link>
+      <router-link to="/orderlist"><a href="#"><span>订单</span></a></router-link>
     </el-tabs>
 
   </el-badge>

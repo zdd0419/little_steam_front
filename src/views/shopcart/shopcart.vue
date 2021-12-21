@@ -42,10 +42,11 @@ setup(){
     }
     //初始化购物车数据
     const init = () => {
-      getCart("include=goods").then((res) => {
-        state.list = res.data;
+      getCart(window.localStorage.getItem("user_id")).then((res) => {
+        state.list = res.items;
         console.log(state.list);
-        state.result = res.data.filter(item => item.is_checked == 1).map(n=>n.id);
+        alert(state.list[0])
+        // state.result = res.data.filter(item => item.is_checked == 1).map(n=>n.id);//筛掉下架游戏
       });
     };
     const groupChange = (result) =>{

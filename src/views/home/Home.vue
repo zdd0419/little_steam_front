@@ -4,9 +4,9 @@
     <div class="container">
       <div class="item" style="background:#000"></div>
 <slides :slides='slides'></slides>
-<cheap></cheap>
-<recommend></recommend>
-<div class="free"><free :freegoods='freegoods'></free></div>
+<!--<cheap></cheap>-->
+<!--<recommend></recommend>-->
+<!--<div class="free"><free :freegoods='freegoods'></free></div>-->
 <div class="goods"><p>当下最新流行</p><goods :category1='goods.category1' :category2='goods.category2' :category3='goods.category3'></goods></div>
     </div>
   </div>
@@ -28,28 +28,31 @@ export default {
   setup() {
     
     const slides = ref([]);
-    const freegoods = ref([])
+    const freegoods = ref([]);
      const goods = reactive({
    category1:[],
    category2:[],
    category3:[]
  });
     onMounted(()=>{
-      getCategoryGoods("sales", 6).then((res) => {
-        slides.value = res.goods.data;
+      getCategoryGoods().then((res) => {
+        slides.value = res
+        // slides.value[0].surface = require(slides.value[0].surface)
       });
-      getCategoryGoods("sales", 7).then((res) => {
-        freegoods.value = res.goods.data;
-      });
-      getHomeGoods(4).then(res=>{
-        goods.category1 = res.goods.data
-        console.log(res.goods.data);
+      // getCategoryGoods("sales", 7).then((res) => {
+      //   freegoods.value = res.goods.data;
+      // });
+      getHomeGoods("冒险").then(res=>{
+        goods.category1 = res
+        console.log(res)
       })
-      getHomeGoods(2).then(res=>{
-        goods.category2 = res.goods.data
+      getHomeGoods("动作").then(res=>{
+        goods.category2 = res
+        console.log(res)
       })
-      getHomeGoods(3).then(res=>{
-        goods.category3 = res.goods.data
+      getHomeGoods("休闲").then(res=>{
+        goods.category3 = res
+        console.log(res)
       })
     })
 
@@ -85,7 +88,7 @@ export default {
   position: absolute;
   width: 100%;
   margin-top: 2%;
-  top: 62%;
+  top: 18.5%;
   border-radius: 4px;
 }
 .goods p{

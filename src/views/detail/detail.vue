@@ -204,8 +204,6 @@ export default {
       getDetail(id.value).then((res) => {
         game.detail = res
         console.log("---game_name---")
-        // console.log(game.game_images[0].pic_url);
-        // alert(game.game_name);
       });
 
       getTags(id.value).then((res) => {

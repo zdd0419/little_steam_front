@@ -238,14 +238,14 @@ methods:{
 </script>
 <style>
 
-.content{
-  width:40%;
-  height: 40px;
-  /*display:table;*/
-  border-style: solid;
-  border-color: gray;
-  margin:3% 20% 0 20%;
-}
+/*.content{*/
+/*  width:40%;*/
+/*  height: 40px;*/
+/*  !*display:table;*!*/
+/*  border-style: solid;*/
+/*  border-color: gray;*/
+/*  margin:3% 20% 0 20%;*/
+/*}*/
 
 .userinfo{
   position: absolute;

@@ -7,10 +7,9 @@ export function getCategory() {
     })
 }
 
-export function getCategoryGoods(order = 'sales', cid = 0, page = 1) {
+export function getCategoryGoods(order = 'sales', cid = 0) {
     return request({
-        url: '/api/goods?category_id=' + cid + '&page=' + page + '&' + order + '=1',
-
+        url: '/mall/',
     })
 }
 export function searchGoods(title) {

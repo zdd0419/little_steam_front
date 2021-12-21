@@ -2,21 +2,21 @@
   <div>
     <div class="goods2">
       <div class="container">
-          <h4>即将推出</h4>
-        <div class="category" v-for="item in category1" :key="item.id" @click="gotodetail(item.id)">
-          <img :src="item.cover" alt=""><div class="content"><p>{{ item.title }}</p><span>￥{{item.price}}</span></div>
+          <h4>冒险</h4>
+        <div class="category" v-for="item in category1" :key="item.game" @click="gotodetail(item.game)">
+          <img :src="'http://127.0.0.1:8000' + item.surface" alt=""><div class="content"><p>{{ item.game_name }}</p><span>￥{{item.price}}</span></div>
         </div>
       </div>
       <div class="container">
-          <h4>全新发行</h4>
-        <div class="category" v-for="item in category2" :key="item.id" @click="gotodetail(item.id)">
-         <img :src="item.cover" alt=""> <div class="content"><p>{{ item.title }}</p><span>￥{{item.price}}</span></div>
+          <h4>动作</h4>
+        <div class="category" v-for="item in category2" :key="item.game" @click="gotodetail(item.game)">
+         <img :src="'http://127.0.0.1:8000' + item.surface" alt=""> <div class="content"><p>{{ item.game_name }}</p><span>￥{{item.price}}</span></div>
         </div>
       </div>
       <div class="container">
-          <h4>最畅销</h4>
-        <div class="category" v-for="item in category3" :key="item.id" @click="gotodetail(item.id)">
-          <img :src="item.cover" alt=""><div class="content"><p>{{ item.title }}</p><span>￥{{item.price}}</span></div>
+          <h4>休闲</h4>
+        <div class="category" v-for="item in category3" :key="item.game" @click="gotodetail(item.game)">
+          <img :src="'http://127.0.0.1:8000' + item.surface" alt=""><div class="content"><p>{{ item.game_name }}</p><span>￥{{item.price}}</span></div>
         </div>
       </div>
     </div>

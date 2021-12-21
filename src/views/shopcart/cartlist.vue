@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div class="container" v-for="item in cartlist" :key="item.id">
-      <img :src="item.goods.data.cover_url" alt="" />
+    <div class="container" v-for="item in cartlist" :key="item.game">
+      <img :src="'http://127.0.0.1:8000' + item.surface" alt="" />
       <div class="content">
         <span
-          ><h2>{{ item.goods.data.title }}</h2></span
+          ><h2>{{ item.game_name }}</h2></span
         >
         <div class="price">
-          <p>￥{{ item.goods.data.price }}</p>
+          <p>￥{{ item.price }}</p>
         </div>
       </div>
       <el-button
         class="delete"
         type="primary"
         @click="
-          deleteGood(item.id)
+          deleteGood(item.game)
         "
       >
         <img
