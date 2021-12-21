@@ -63,7 +63,7 @@
       <el-empty v-if="user.game_count=0" style="margin-top:5%" description="您还没有购买游戏~">
       <router-link v-if="user.game_count>0" to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
       </el-empty></el-tab-pane>
-    <el-tab-pane label="好友" name="fourth"><div style="margin-top:5%">
+    <el-tab-pane label="好友" @click="gotoFirend(user.user_id)" name="fourth"><div style="margin-top:5%">
     <h4>甜蜜的孤独</h4>
     <el-divider content-position="center">SANE GAME</el-divider>
     <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>
@@ -142,7 +142,13 @@ setup(){
       })
 
       
-    })
+    });
+    const gotoFirend=(id)=>{
+      router.push({ path: "/firends", query: { id: JSON.stringify(id) } });
+      setTimeout(() => {
+        router.go(0);
+      }, 200);
+  }
     const open = () => {
       
         ElMessageBox.prompt('请输入要修改的昵称', '提示', {
@@ -167,9 +173,12 @@ setup(){
             });
           });
       };
+
 return{
-activeName,...toRefs(state),
-open
+activeName,
+  ...toRefs(state),
+  gotoFirend,
+    open,
 }
 },
 components:{

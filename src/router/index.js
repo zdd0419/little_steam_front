@@ -152,6 +152,16 @@ const routes = [{
             // keepAlive: true
         }
     },
+    {
+        path: '/friends',
+        name: 'friends',
+        component: denote,
+        meta: {
+            title: 'SANE GAME-好友圈',
+            isAuthRequired: true,
+            // keepAlive: true
+        }
+    },
 ]
 
 const router = createRouter({
