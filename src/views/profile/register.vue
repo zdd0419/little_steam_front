@@ -30,12 +30,12 @@
         placeholder="Enter UserName..."
       ></el-input>
     </el-form-item>
-    <el-form-item label="邮箱" prop="email">
-      <el-input
-        v-model="registerUser.email"
-        placeholder="Enter Email..."
-      ></el-input>
-    </el-form-item>
+<!--    <el-form-item label="邮箱" prop="email">-->
+<!--      <el-input-->
+<!--        v-model="registerUser.email"-->
+<!--        placeholder="Enter Email..."-->
+<!--      ></el-input>-->
+<!--    </el-form-item>-->
     <el-form-item label="密码" prop="password">
       <el-input
         v-model="registerUser.password"
@@ -83,14 +83,18 @@ export default {
   setup() {
     const router = useRouter();
     const store = useStore();
-    
-    
+
+
     const registerUser = ref({
     name: "",
-    email: "",
     password: "",
     password_confirmation: "",
 });
+    const registerUser2 = ref({
+      type: "register",
+      name: "",
+      password: ""
+    });
 
 const validatePass2 = (rule, value, callback) => {
     if (value === "") {
@@ -150,12 +154,12 @@ const validatePass2 = (rule, value, callback) => {
 });
     //触发登录方法
     const handleRegister = () => {
+      registerUser2.name = registerUser.name
+      registerUser2.password = registerUser.password
       //先验证 在提交
-      register(registerUser.value).then((res) => {
-          
+      register(registerUser2.value).then((res) => {
         console.log(res);
         registerUser.name="";
-        registerUser.email = "";
         registerUser.password = "";
         registerUser.password_confirmation = "";
         setTimeout(() => {
@@ -164,9 +168,9 @@ const validatePass2 = (rule, value, callback) => {
        setTimeout(() => {
           router.go(0)
         }, 600);
-        
+
       });
-      
+
           ElMessage({
             showClose: true,
             message: '注册成功！！',

@@ -3,7 +3,7 @@ import { request } from './request';
 
 export function register(data) {
     return request({
-        url: '/api/auth/register',
+        url: '/register/',
         method: 'post',
         data
     })
@@ -32,7 +32,14 @@ export function getUser(userid) {
 
 export function getWarehouse(userid) {
     return request({
-        url: '/users/warehouse'+userid,
+        url: '/users/warehouse/'+userid,
+        method: 'get'
+    })
+}
+
+export function getBalanceLog(userid) {
+    return request({
+        url: '/users/'+userid+'/balanceLog',
         method: 'get'
     })
 }

@@ -62,7 +62,7 @@
 
             <!-- <img src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%88%91%E7%9A%84.png" style="width:15%;margin-right:10%" alt=""> -->
 
-            
+
               <el-menu-item index="6-1" @click="gotoprofile">我的账号</el-menu-item>
             <el-menu-item @click="tologout" index="6-2">退出登录</el-menu-item>
           </el-submenu>
@@ -104,8 +104,10 @@ export default defineComponent({
       }
     };
     const tologout = () => {
+      router.push({ path: "/login" });
       logout().then((res) => {
-        if (res.status == "204") {
+        // if (res.status == "204") {
+        if (1) {
           store.dispatch("updateCart");
           setTimeout(() => {
             router.go(0);
@@ -131,20 +133,20 @@ export default defineComponent({
       user: {},
     });
     const gotohome = () => {
-     
-       
-          
+
+
+
             router.push({ path: "/home" });
-          
-        
-     
-      
+
+
+
+
     };
     const gotoprofile = () => {
-     
+
         router.push({ path: "/profile" });
-     
-      
+
+
     };
     onMounted(() => {
       console.log(window.localStorage.getItem("token"));
