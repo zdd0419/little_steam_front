@@ -43,3 +43,11 @@ export function putUserinfo(data) {
         method: 'put'
     })
 }
+
+export function friendID(user) {
+    return request({
+        url: '/users/'+ user+'/friends' ,
+        method: 'get'
+    })
+}
+

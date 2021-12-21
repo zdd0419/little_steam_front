@@ -52,7 +52,6 @@ export default {
    const router = useRouter()
    const gotodetail = (id) =>{
             router.push({path:'/detail',query:{id}})
-            
      }
     return {
      gotodetail
