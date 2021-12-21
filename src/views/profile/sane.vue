@@ -17,9 +17,9 @@
           label-width="100px"
         >
         <div class="input">
-          <el-form-item label="邮箱" prop="email">
+          <el-form-item label="昵称" prop="name">
             <el-input
-              v-model="loginUser.email"
+              v-model="loginUser.name"
               placeholder="Enter Email..."
               
             ></el-input>
@@ -68,17 +68,24 @@ export default {
     
     
     const loginUser = ref({
-      email: "",
+      type: "login",
+      name: "",
       password: "",
     });
     const rules = ref({
-      email: [
+      name: [
         {
-          type: "email",
-          message: "邮箱格式不正确",
+          type: "string",
+          message: "昵称格式不正确",
           required: true,
           trigger: "blur",
         },
+        {
+          min: 1,
+          max: 15,
+          message: "昵称不能小于1位或者大于15位",
+          trigger: "blur"
+        }
       ],
       password: [
         { required: true, message: "密码不能为空", trigger: "blur" },
@@ -94,14 +101,14 @@ export default {
     const handleLogin = () => {
       //先验证 在提交
       login(loginUser.value).then((res) => {
-          console.log(res.access_token);
+          console.log(res.id);
           
         //将token保存本地
-        window.localStorage.setItem("token", res.access_token);
+        window.localStorage.setItem("user_id", res.id);
         //在vuex islogin
-store.commit("setIsLogin", true);
-           store.dispatch("updateCart");
-        loginUser.email = "";
+        store.commit("setIsLogin", true);
+        store.dispatch("updateCart");
+        loginUser.name = "";
         loginUser.password = "";
        
         setTimeout(() => {

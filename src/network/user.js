@@ -11,7 +11,7 @@ export function register(data) {
 }
 export function login(data) {
     return request({
-        url: '/api/auth/login',
+        url: '/login/',
         method: 'post',
         data
     })
@@ -23,12 +23,20 @@ export function logout() {
 
     })
 }
-export function getUser() {
+export function getUser(userid) {
     return request({
-        url: '/api/user',
-
+        url: '/users/'+userid,
+        method: 'get'
     })
 }
+
+export function getWarehouse(userid) {
+    return request({
+        url: '/users/warehouse'+userid,
+        method: 'get'
+    })
+}
+
 export function putUserinfo(data) {
     return request({
         url: '/api/user' + '?name=' + data,
