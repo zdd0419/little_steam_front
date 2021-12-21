@@ -2,7 +2,8 @@
   <div>
     <div class="container" v-for="item in cartlist" :key="item.id">
       <img :src="item.goods.data.cover_url" alt="" />
-      <div class="content">
+      <div class="content" @click="godetail(cartlist.id,cartlist.title)">
+
         <span
           ><h2>{{ item.goods.data.title }}</h2></span
         >
