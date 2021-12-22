@@ -1,9 +1,8 @@
 <template>
   <div id="goodslist">
-      <div class="container" v-for="item in goodslist" :key="item.id">
-          <img :src="item.cover" @click="gotodetail(item.id)">
-          <h4>{{item.title}}</h4>
-          <p>xsanegame.oss-cn</p>
+      <div class="container" v-for="item in goodslist" :key="item.game">
+          <img :src="'http://127.0.0.1:8000' + item.surface" @click="gotodetail(item.game)">
+          <h4>{{item.game_name}}</h4>
           <h4>￥{{item.price}}</h4>
       </div>
   </div>
@@ -48,7 +47,7 @@ methods:{
       flex-wrap: wrap;
     .container{
     position: relative;
-    width: 19%;
+    width: 45%;
     height: 44vh;
     overflow: hidden;
     margin-right: 1%;

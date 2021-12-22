@@ -4,9 +4,10 @@
       <img :src="'http://127.0.0.1:8000' + item.surface" alt="" />
       <div class="content">
         <span
-          ><h2>{{ item.game_name }}</h2></span
+          ><h3>{{ item.game_name }}</h3></span
         >
         <div class="price">
+          <p style="background: green">{{item.discount != 100 ? "-" + (100-item.discount) + "%": ""}}</p>
           <p>￥{{ item.price }}</p>
         </div>
       </div>

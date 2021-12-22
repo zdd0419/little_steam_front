@@ -3,19 +3,17 @@
     <div class="container" v-for="item in wishlist" :key="item.game.game">
       <img :src="'http://127.0.0.1:8000'+ item.game.surface" alt="" />
       <div class="content">
-        <span><h2>{{ item.game.game_name }}</h2></span>
+        <span><h3>{{ item.game.game_name }}</h3></span>
         <span><h4>{{ item.timestamp }}</h4></span>
         <div class="price">
+          <h4 style="background: green">{{ item.game.discount != 100 ? "-" + (100-item.game.discount) + "%": "" }}</h4>
           <p>￥{{ item.game.price }}</p>
         </div>
       </div>
       <el-button
           class="delete"
           type="primary"
-          @click="
-          deleteGood(item.id)
-        "
-      >
+          @click="deleteGood(item.id)">
         <img
             src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E5%88%A0%20%E9%99%A4.png"
             alt=""

@@ -23,15 +23,15 @@
           alt=""
       /></router-link>
       <el-menu-item index="1" @click="gotohome">商城</el-menu-item>
-      <el-menu-item index="4"><a href="#">新闻</a></el-menu-item>
+<!--      <el-menu-item index="4"><a href="#">新闻</a></el-menu-item>-->
 
-      <el-menu-item index="3">虚幻引擎</el-menu-item>
-      <el-submenu index="2">
-        <template #title>关于 SANE GAME</template>
-        <el-menu-item index="2-1">关于公司</el-menu-item>
-        <el-menu-item index="2-2">SANE GAME</el-menu-item>
-        <el-menu-item index="2-3">招纳贤士</el-menu-item>
-      </el-submenu>
+<!--      <el-menu-item index="3">虚幻引擎</el-menu-item>-->
+<!--      <el-submenu index="2">-->
+<!--        <template #title>关于 SANE GAME</template>-->
+<!--        <el-menu-item index="2-1">关于公司</el-menu-item>-->
+<!--        <el-menu-item index="2-2">SANE GAME</el-menu-item>-->
+<!--        <el-menu-item index="2-3">招纳贤士</el-menu-item>-->
+<!--      </el-submenu>-->
       <div class="right">
         <div class="login" v-show="noLogin">
           <el-submenu index="5">

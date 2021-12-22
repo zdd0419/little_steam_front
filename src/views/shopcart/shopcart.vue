@@ -45,7 +45,6 @@ setup(){
       getCart(window.localStorage.getItem("user_id")).then((res) => {
         state.list = res.items;
         console.log(state.list);
-        alert(state.list[0])
         // state.result = res.data.filter(item => item.is_checked == 1).map(n=>n.id);//筛掉下架游戏
       });
     };

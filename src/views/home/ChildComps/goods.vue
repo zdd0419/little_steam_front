@@ -4,7 +4,11 @@
       <div class="container">
           <h4>冒险</h4>
         <div class="category" v-for="item in category1" :key="item.game" @click="gotodetail(item.game)">
-          <img :src="'http://127.0.0.1:8000' + item.surface" alt=""><div class="content"><p>{{ item.game_name }}</p><span>￥{{item.price}}</span></div>
+          <img :src="'http://127.0.0.1:8000' + item.surface" alt="">
+          <div class="content"><p>{{ item.game_name }}</p>
+            <span style="background: green">{{item.discount != 100 ? "-" + (100-item.discount) + "%": ""}}</span>
+            <span>￥{{item.price*item.discount*0.01}}</span>
+          </div>
         </div>
       </div>
       <div class="container">
