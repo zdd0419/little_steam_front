@@ -104,7 +104,7 @@ export default defineComponent({
       }
     };
     const tologout = () => {
-      var id = 1
+      var id = 2
       //router.push({path:'/detail'})
       router.push({ path: "/detail", query: { id } });
       logout().then((res) => {

@@ -18,7 +18,7 @@
       <p>{{ detail.game_description }}</p>
       <h4>{{ detail.price != 0 ? "￥" + detail.price : "免费" }}</h4>
       <div class="shopping">
-        <div class="buynow" @click="gotodetail(detail.id)" style="width: 100px">
+        <div class="buynow" @click="gotodetail(detail.game)" style="width: 100px">
           {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
         </div>
         <div @click="handleAddWish(detail.game)" style="margin-left: 5px;line-height: 3em">
@@ -67,8 +67,9 @@ export default {
       init();
     });
     const gotodetail = (id) =>{
-            router.push({path:'/detail',query:{id}})
-            
+      // var id = 2
+      router.push({path:'/detail',query:{id}})
+
      }
      //原来的添加到购物车
      const handleAddCart = (id) => {

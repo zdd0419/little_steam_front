@@ -14,8 +14,8 @@
           游戏内容
           <div class="button">
             <el-row>
-              <el-button type="primary" plain @click="gotoPay(id)" >买给自己</el-button>
-              <el-button type="success" plain @click="gotofrend()">赠送好友</el-button>
+              <el-button type="primary" plain @click="gotoPay(id, user_id)" >买给自己</el-button>
+              <el-button type="success" plain @click="gotofrend(id)">赠送好友</el-button>
             </el-row>
           </div>
 
@@ -40,7 +40,11 @@ import { ElMessage } from "element-plus";
 export default {
   name: "",
   setup(){
-    const id = ref(); //游戏id
+    // const id = ref(); //游戏id
+    const data = reactive({
+      id: ''
+    });
+    const user_id = window.localStorage.getItem("user_id");
     let game = reactive({
       detail: {},
 
@@ -49,33 +53,37 @@ export default {
     const router = useRouter();
 
     onMounted(() => {
-          id.value = route.query.id;
-          alert("buy"+id.value)
+          // id.value = route.query.id;
+          data.id = route.query.id;
+          alert("buy"+data.id)
     });
 
-    const gotoPay = (id) => {
-      //alert("gotopay"+id.value)
-      router.push({ path: "/pay",query: {id} });
+    const gotoPay = (id, bene_id) => {
+      alert("gotopay"+id.value)
+      router.push({ path: "/pay",query: {id,bene_id} });
 
       setTimeout(() => {
         router.go(0);
-      }, 200);
+      }, 1000);
     };
-    const gotofrend = () => {
-      ElMessage({
-        showClose: true,
-        message: "跳转成功！！",
-        type: "success",
-      });
-      router.push({ path: "/denote"});
+    const gotofrend = (id) => {
+      // ElMessage({
+      //   showClose: true,
+      //   message: "跳转成功！！",
+      //   type: "success",
+      // });
+      alert('gotofriend'+id.value)
+      router.push({ path: "/denote", query: {id}});
       setTimeout(() => {
         router.go(0);
-      }, 200);
+      }, 1000);
     };
     return{
       gotoPay,
-      id,
+      // id,
       gotofrend,
+      user_id,
+      ...toRefs(data)
     }
   },
 
