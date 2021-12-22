@@ -36,7 +36,6 @@ export default {
 
 
     return {
-
       ...toRefs(state),
       fullscreenLoading
     };
