@@ -18,6 +18,26 @@
             <el-radio :label="9" style="font-size: 30px">我的钱包支付</el-radio>
           </el-radio-group>
 
+
+          <br>
+
+          <div>
+            <br>
+            <h2 style="text-align: left; font-size: 20px; color: #fff">
+              <!--            {{ detail.title }}-->
+              请选择使用的积分数值
+            </h2>
+          </div>
+
+          <br>
+
+          <div>
+            <el-input-number v-model="usecredit"  :min="0" :max="credit_balance" label="积分余额"></el-input-number>
+          </div>
+
+          <br>
+
+
           <div>
             <el-tooltip class="item" effect="dark"  placement="right-end">
               <el-button type="confirm" round @click="confirmPay()">确认支付</el-button>
@@ -43,26 +63,28 @@ import detailtop from "./detailtop.vue";
 import { ElMessage } from "element-plus";
 
 export default {
-  data () {
-    return {
-      radio: 3,
-      ylg:"ylg"
-    };
-  },
+
   name: "",
   setup(){
-    let id = ref();
+    const data=reactive( {
+        radio: 3,
+        usecredit:'',
+        credit_balance:''
+    })
+    // let id = ref();
+    let bene_id = ref();
     //var radio = 3;
     const route = useRoute();
     const router = useRouter();
     const state = reactive({
       buydata:{
         user_id: window.localStorage.getItem("user_id"),
-        beneficiary_id: window.localStorage.getItem("user_id"),
+        beneficiary_id: "",
         credit: 0,
         method: "无",
         remark: ""
-      }
+      },
+      id: ''
     });
 
     let game = reactive({
@@ -71,38 +93,43 @@ export default {
     });
 
     onMounted(() => {
-      id.value = route.query.id;
-      //alert("pay"+route.query.id)
+      state.id = route.query.id;
+      bene_id.value = route.query.bene_id;
+      data.credit_balance = window.localStorage.getItem("credit_balance")
+      alert('pay.vue' + state.id)
     });
-
     const confirmPay = () => {
-      //alert("confirm")
-      // alert(state.buydata.value.method)
-      alert(this.ylg)
-      //if(this.$data.radio == 9 )
-        // state.buydata.method = "钱包"
-      buyGame(id, state.buydata.value ).then((res) => {
-        //alert(res.error);
+      state.buydata.beneficiary_id = bene_id.value;
+      state.buydata.credit = data.usecredit;
+      if(data.radio == 3 )
+        state.buydata.method = "微信"
+      if(data.radio == 6 )
+        state.buydata.method = "支付宝"
+      if(data.radio == 9 )
+        state.buydata.method = "钱包"
+      alert('confirmpay'+state.id)
+      // alert(state.buydata.beneficiary_id)
+      buyGame(state.id, state.buydata ).then((res) => {
+
         if(res.error !="购买成功") {
           alert(res.error);
-          //return;
+        } else{
+          ElMessage({
+            showClose: true,
+            message: "支付成功！！",
+            type: "success",
+          });
+          router.push({ path: "/home"});
         }
       });
-      ElMessage({
-        showClose: true,
-        message: "支付成功！！",
-        type: "success",
-      });
-      router.push({ path: "/home"});
       setTimeout(() => {
         router.go(0);
-      }, 200);
+      }, 1000);
     };
     return{
       confirmPay,
       ...toRefs(state),
-      id,
-      //radio
+      ...toRefs(data)
     }
   },
 

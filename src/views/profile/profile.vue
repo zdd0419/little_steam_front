@@ -72,16 +72,42 @@
 <!--  </div><el-button style="background-color:white;-->
 <!--   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button></el-tab-pane>-->
       <el-tab-pane label="好友" name="fourth">
-        <div  class=" " v-for="item in friendList" :key="item.id">
-          <div class="content"><p></p >{{item.nickname}}</div>
-        </div>
-        <div style="margin-top:5%">
+<!--        <div  class=" " v-for="item in friendList" :key="item.id">-->
+<!--          <div class="content"><p></p >{{item.nickname}}</div>-->
+<!--        </div>-->
+
+        <el-table :data="friendList"
+            style="width:60%;margin:3% 20% 0 20%">
+          <el-table-column
+              prop="friend"
+              label="好友id"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="nickname"
+              label="昵称"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="tag"
+              label="分组">
+          </el-table-column>
+          <el-table-column
+              prop="friend_intimacy"
+              label="好友亲密度">
+          </el-table-column>
+        </el-table>
+
+        <div v-if="friendList.length==0" style="margin-top:5%">
           <h4>甜蜜的孤独</h4>
           <el-divider content-position="center">SANE GAME</el-divider>
           <span style="color:#C0C4CC;font-size:15px">你可以独享游戏时光。但和朋友们一起玩也是一种人生乐趣。掠过你那些朋友的头像和他们在玩的游戏, </span>
           <br>
           <span style="color:#C0C4CC;font-size:15px">添加好友，和他们一起聊天, 或分享美妙游戏时光。 </span>
-        </div><el-button style="background-color:white;
+        </div>
+        <br>
+        <el-input v-model="input" placeholder="请输入想要添加的好友名" style="width: 40%; margin-right: 10px "/>
+        <el-button @click="addFriend()" style="background-color:white;
  background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button>
       </el-tab-pane>
       <el-tab-pane label="钱包" name="fifth"><div style="margin-top:5%">
@@ -138,7 +164,7 @@
 </template>
 
 <script>
-import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID} from "../../network/user";
+import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
@@ -163,7 +189,11 @@ setup(){
     const state = reactive({
       user:{},
       gameList: [],
-      BalanceLogData: []
+      BalanceLogData: [],
+      input: '',
+      data: {
+        fname: ''
+      }
     })
   const state2 = reactive({
     friendList :[],
@@ -172,6 +202,7 @@ setup(){
       getUser(window.localStorage.getItem("user_id")).then(res=>{
         //console.log(res.data);
         state.user = res;
+        window.localStorage.setItem("credit_balance", res.user_credit_balance);
       })
 
       getWarehouse(window.localStorage.getItem("user_id")).then(res=>{
@@ -197,6 +228,17 @@ setup(){
       })
 
     })
+
+    const addFriend = () => {
+      state.data.fname = state.input
+      addfriend(window.localStorage.getItem("user_id"), state.data).then(res => {
+          if(res.error != "添加成功"){
+              alert(res.error);
+          }else{
+            location.reload();
+          }
+      })
+    }
     const open = () => {
 
         ElMessageBox.prompt('请输入要修改的昵称', '提示', {
@@ -222,9 +264,10 @@ setup(){
           });
       };
 return{
-activeName,...toRefs(state),
-open,
-  ...toRefs(state2)
+  activeName,...toRefs(state),
+  open,
+  ...toRefs(state2),
+  addFriend
 }
 },
 components:{

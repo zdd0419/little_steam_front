@@ -58,3 +58,11 @@ export function friendID(user) {
     })
 }
 
+export function addfriend(user, data) {
+    return request({
+        url: '/users/'+ user+'/newFriend' ,
+        method: 'post',
+        data
+    })
+}
+
