@@ -1,6 +1,6 @@
 <template>
   <div class="pic" >
-    <img :src="pics" alt="" />
+    <img :src="pics" alt="" @click="gotodetail(detail.game)"/>
 <!--    <div class="logo">-->
 <!--      <transition-->
 <!--        name="logo"-->

@@ -13,7 +13,7 @@
           class="delete"
           type="primary"
           @click="
-          deleteGood(item.game.game)
+          deleteGood(item.id)
         "
       >
         <img
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {getCart, deleteCartItem, getWish} from "../../network/cart";
+import {getCart, deleteWishItem, getWish} from "../../network/cart";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, toRefs, computed } from "vue";
 import { ElLoading } from 'element-plus';
@@ -62,7 +62,7 @@ export default {
 
     const deleteGood = (id) => {
 
-      deleteCartItem(id).then((res) => {
+      deleteWishItem(id).then((res) => {
         init();
         const loading = ElLoading.service({
           lock: true,
