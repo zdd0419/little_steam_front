@@ -24,38 +24,40 @@
           <br />
           <h2>{{ detail.game_description }}</h2>
           <p>{{ detail.OS }}</p>
-          <img
-              :src="pics[0]"
-              alt=""
-              style="width: 100%; height: auto; border-radius: 5px"
-          />
-          <img
-              :src="pics[1]"
-              alt=""
-              style="
-              width: 49%;
-              height: auto;
-              float: left;
-              border-radius: 5px;
-              margin: 2% 0 2% 0;
-            "
-          />
-          <img
-              :src="pics[2]"
-              alt=""
-              style="
-              width: 49%;
-              height: auto;
-              float: right;
-              border-radius: 5px;
-              margin: 2% 0 2% 0;
-            "
-          />
-          <img
-              :src="pics[3]"
-              alt=""
-              style="width: 100%; height: auto; border-radius: 5px"
-          />
+<!--          <img-->
+<!--              :src="pics[0]"-->
+<!--              alt=""-->
+<!--              style="width: 100%; height: auto; border-radius: 5px"-->
+<!--          />-->
+<!--          <img-->
+<!--              :src="pics[1]"-->
+<!--              alt=""-->
+<!--              style="-->
+<!--              width: 49%;-->
+<!--              height: auto;-->
+<!--              float: left;-->
+<!--              border-radius: 5px;-->
+<!--              margin: 2% 0 2% 0;-->
+<!--            "-->
+<!--          />-->
+<!--          <img-->
+<!--              :src="pics[2]"-->
+<!--              alt=""-->
+<!--              style="-->
+<!--              width: 49%;-->
+<!--              height: auto;-->
+<!--              float: right;-->
+<!--              border-radius: 5px;-->
+<!--              margin: 2% 0 2% 0;-->
+<!--            "-->
+<!--          />-->
+<!--          <img-->
+<!--              :src="pics[3]"-->
+<!--              alt=""-->
+<!--              style="width: 100%; height: auto; border-radius: 5px"-->
+<!--          />-->
+
+
 <!--          <div class="likegoods">-->
 <!--            <h2>相似游戏</h2>-->
 <!--            <div class="item" v-for="item in like_goods" :key="item.id">-->
@@ -98,65 +100,76 @@
 <!--              </div>-->
 <!--            </div>-->
 <!--          </div>-->
+          <h2>游戏测评</h2>
+          <div class="commentPosition">
+            <commentList :commentList='list'></commentList>
+          </div>
         </div>
-        <el-affix :offset="160" class="shopping"
-        ><div
-            style="
+
+        <el-affix :offset="160" class="shopping">
+          <div style="
               width: 90%;
               float: right;
               display: flex;
               flex-direction: column;
-            "
-        >
-          <img
-              :src="pics[4] ? pics[4] : pics[0]"
-              style="
+            ">
+            <img :src="pics[4] ? pics[4] : pics[0]" style="
                 width: 60%;
                 height: auto;
                 border-radius: 10px;
                 margin: 15% 20% 15% 20%;
-              "
-          />
-          <div
-              style="
+              "/>
+<!--            <div style="-->
+<!--                float: left;-->
+<!--                color: #fff;-->
+<!--                background: #3c3c3c;-->
+<!--                font-size: 12px;-->
+<!--                width: 23%;-->
+<!--                border-radius: 5px;" >-->
+<!--              <div class="container" v-for="item in tags">-->
+<!--                <p  >{{ item.category}}({{item.category_hot}})</p>-->
+<!--              </div>-->
+<!--            </div>-->
+            <h1 style="color: #fff; text-align: left; margin: 5% 0 5% 0">￥{{ detail.price }}</h1>
+            <div class="buynow" @click="gotoBuy(id)">
+              {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
+            </div>
+            <div class="cart" @click="handleAddWish(detail.game)">
+              <img src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%B7%BB%E5%8A%A0.png"/>添至愿望清单
+            </div>
+            <div class="container" style="margin-left: 0; margin-right: 0;width: 100%">
+              <div v-for="item in tags">
+                <span style="
                 float: left;
                 color: #fff;
                 background: #3c3c3c;
-                font-size: 12px;
-                width: 23%;
+                font-size: 16px;
+                width: auto;
                 border-radius: 5px;
-              "
-          >
-            <div class="container" v-for="item in tags">
-              <p  >{{ item.category}}({{item.category_hot}})</p>
+                padding:5px;
+                margin:5px">{{ item.category}}</span>
+              </div>
             </div>
+            <div class="container">
 
-          </div>
-          <span style="color: #fff; text-align: left; margin: 5% 0 5% 0"
-          >￥{{ detail.price }}</span
-          >
-          <div class="buynow" @click="gotoBuy(id)">
-            {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
-          </div>
-          <div class="cart" @click="handleAddCart(detail.id)">
-            <img
-                src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%B7%BB%E5%8A%A0.png"
-            />添至愿望清单
-          </div>
-        </div></el-affix
-        >
+            </div>
+        </div></el-affix>
+        <div>
+<!--          <commentList :commentList='list'></commentList>-->
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getDetail, getTags} from "../../network/detail";
+import {getDetail, getTags, getComments} from "../../network/detail";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, toRefs } from "vue";
-import { addCart } from "../../network/cart";
+import {addCart, addWish} from "../../network/cart";
 import { useStore } from "vuex";
 import detailtop from "./detailtop.vue";
+import commentList from "./commentList.vue";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -174,6 +187,20 @@ export default {
       tags: [],
       pics: [],
     });
+    const state = reactive({
+      list: [],
+      result:[], //id数组
+
+    });
+    const initComments = (id) => {
+      getComments(id).then((res) => {
+        state.list = res;
+        console.log('--comments---');
+        console.log(res);
+        // state.result = res.data.filter(item => item.is_checked == 1).map(n=>n.id);
+      });
+    };
+
     const gotodetail = (id) => {
       router.push({ path: "/detail", query: { id } });
       setTimeout(() => {
@@ -194,42 +221,60 @@ export default {
         }
       });
     };
+    const handleAddWish=(id)=>{
+      ElMessage({
+        showClose: true,
+        message: "添加心愿单成功！！",
+        type: "success",
+      });
+      addWish({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
+        if (res.status == "201" || res.status == "204") {
+          //设置store中cartCount
+          store.dispatch("updateWish");
+
+        }
+      });
+    }
     const gotoBuy = (id) => {
       router.push({ path: "/buy", query: { id } });
     };
     onMounted(() => {
       id.value = route.query.id;
       //id.value = 1;
-      alert(id.value);
+      // alert(id.value);
       getDetail(id.value).then((res) => {
         game.detail = res
-        console.log("---game_name---")
+        // console.log("---game_name---")
       });
 
       getTags(id.value).then((res) => {
         game.tags = res
-        console.log("---game_name---")
-        alert(game.tags[0].category)
+        // console.log("---game_name---")
+        // alert(game.tags[0].category)
         // console.log(game.game_images[0].pic_url);
         // alert(game.game_name);
       });
-
+      initComments(id.value)
     });
     return {
       ...toRefs(game),
+      ...toRefs(state),
       id,
       gotodetail,
       handleAddCart,
+      handleAddWish,
       gotoBuy
     };
   },
   components: {
     detailtop,
+    commentList,
   },
   methods: {},
 };
 </script>
 <style scoped  lang="scss">
+
 #detail {
   position: absolute;
   top: 17%;
@@ -243,6 +288,15 @@ export default {
 
     display: flex;
     flex-wrap: wrap;
+
+    .commentPosition{
+      position: relative;
+      //margin-left: 5px;
+      //top: 25vh;
+      width: 100%;
+      margin: 0;
+
+    }
     .title {
       width: 100%;
       height: auto;

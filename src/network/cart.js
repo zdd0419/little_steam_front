@@ -35,7 +35,7 @@ export function getCart(uid) {
 //删除购物车
 export function deleteCartItem(id) {
     return request({
-        url: `/api/carts/${id}`,
+        url: '/users/cart/' + id,
         method: 'delete',
     })
 }
@@ -51,6 +51,12 @@ export  function  addWish(data){
         url: '/users/wishlist',
         method: 'post',
         data
+    })
+}
+export function deleteWishItem(id) {
+    return request({
+        url: '/users/wishlist/' + id,
+        method: 'delete',
     })
 }
 

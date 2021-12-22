@@ -14,7 +14,7 @@
         class="delete"
         type="primary"
         @click="
-          deleteGood(item.game)
+          deleteGood(item.id)
         "
       >
         <img
@@ -62,7 +62,6 @@ export default {
     };
      
     const deleteGood = (id) => {
-        
       deleteCartItem(id).then((res) => {
         init();
         const loading = ElLoading.service({
@@ -77,8 +76,7 @@ export default {
         setTimeout(() => {
           router.go(0)
         }, 200);
-          
-       
+
       });
       
     };

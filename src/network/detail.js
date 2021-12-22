@@ -21,3 +21,9 @@ export function buyGame(gameid, data) {
         data
     })
 }
+export function getComments(id){
+    return request({
+        url: '/mall/games/' + id + '/comments',
+        method:'get',
+    })
+}
