@@ -72,6 +72,7 @@
 <!--  </div><el-button style="background-color:white;-->
 <!--   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button></el-tab-pane>-->
       <el-tab-pane label="好友" name="fourth">
+
 <!--        <div  class=" " v-for="item in friendList" :key="item.id">-->
 <!--          <div class="content"><p></p >{{item.nickname}}</div>-->
 <!--        </div>-->
@@ -98,6 +99,53 @@
           </el-table-column>
         </el-table>
 
+
+<!--        <el-table :data="friendList"-->
+<!--                  style="width:60%;margin:3% 20% 0 20%">-->
+<!--          <el-table-column-->
+<!--              prop="friend"-->
+<!--              label="好友id"-->
+<!--              width="180">-->
+<!--          </el-table-column>-->
+<!--          <el-table-column-->
+<!--              prop="nickname"-->
+<!--              label="昵称"-->
+<!--              width="180">-->
+<!--            <template v-slot:default="data">-->
+<!--              <el-input placeholder="请输入内容" v-show="data.row.user" v-model="data.row.nickname"></el-input>-->
+<!--              <span v-show="!data.row.user">{{data.row.nickname}}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+
+<!--          <el-table-column-->
+<!--              prop="tag"-->
+<!--              label="分组">-->
+<!--            <template v-slot:default="data">-->
+<!--              <el-input placeholder="请输入内容" v-show="data.row.user" v-model="data.row.tag"></el-input>-->
+<!--              <span v-show="!data.row.user">{{data.row.tag}}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+
+<!--          <el-table-column-->
+<!--              prop="friend_intimacy"-->
+<!--              label="好友亲密度">-->
+<!--          </el-table-column>-->
+
+<!--          <el-table-column-->
+<!--              prop="user"-->
+<!--              label="编辑">-->
+<!--            <template v-slot:default="data">-->
+<!--            <el-button size="mini"-->
+<!--                       type="primary"-->
+<!--                       round-->
+<!--                       plain-->
+<!--                       @click=" onclick(data.$index)"> {{button_text[data.row.user]}} </el-button>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+
+<!--        </el-table>-->
+
+
         <div v-if="friendList.length==0" style="margin-top:5%">
           <h4>甜蜜的孤独</h4>
           <el-divider content-position="center">SANE GAME</el-divider>
@@ -109,6 +157,33 @@
         <el-input v-model="input" placeholder="请输入想要添加的好友名" style="width: 40%; margin-right: 10px "/>
         <el-button @click="addFriend()" style="background-color:white;
  background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%">添加新的朋友</el-button>
+
+        <br>
+        <br>
+        <div>
+          <el-form ref="form" :model="sizeForm" label-width="30%" size="medium">
+
+            <el-form-item label="修改好友" size="medium">
+              <br>
+              <el-select v-model="sizeForm.friend2" placeholder="请选择好友" style="margin-right: 800px;">
+                <el-option v-for="item in friendList" :label="item.nickname" :value="item.friend"></el-option>
+                <!--                <el-option label="区域二" value="beijing"></el-option>-->
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="昵称" style="width: 30%; margin-left: 300px">
+              <el-input v-model="sizeForm.nickname2"></el-input>
+            </el-form-item>
+
+            <el-form-item label="分组" style="width: 30%; margin-left: 300px">
+              <el-input v-model="sizeForm.tag2"></el-input>
+            </el-form-item>
+
+            <el-form-item size="large">
+              <el-button type="primary" @click="change()" style="margin-right: 800px">确认修改</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="钱包" name="fifth"><div style="margin-top:5%">
         <img src="@/assets/images/balance.png" style="width:150px; height:150px; border-radius:50%; ">
@@ -164,7 +239,7 @@
 </template>
 
 <script>
-import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend} from "../../network/user";
+import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend, changeFriendinfo} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
@@ -175,7 +250,7 @@ export default {
   name:'',
   data() {
     return {
-      showbalance: false,
+      showbalance: false
 
 
     };
@@ -188,11 +263,22 @@ setup(){
 
     const state = reactive({
       user:{},
+      button_text:['编辑','保存'],
       gameList: [],
       BalanceLogData: [],
       input: '',
       data: {
         fname: ''
+      },
+      data2: {
+        fid:'',
+        nickname:'',
+        tag:''
+      },
+      sizeForm:{
+        friend2:"",
+        nickname2: '',
+        tag2: ''
       }
     })
   const state2 = reactive({
@@ -202,6 +288,10 @@ setup(){
       getUser(window.localStorage.getItem("user_id")).then(res=>{
         //console.log(res.data);
         state.user = res;
+        for (var i = 0; i < res.length; i++) {
+          state2.friendList[i].user = 1;
+          console.log(state2.friendList[i].user)
+        }
         window.localStorage.setItem("credit_balance", res.user_credit_balance);
       })
 
@@ -239,6 +329,27 @@ setup(){
           }
       })
     }
+
+    const change = () =>  {
+        state.data2.fid = state.sizeForm.friend2;
+        state.data2.nickname = state.sizeForm.nickname2;
+        state.data2.tag = state.sizeForm.tag2;
+        changeFriendinfo(window.localStorage.getItem("user_id"), state.data2).then(res =>{
+          if(res.error != "修改成功"){
+            alert(res.error);
+          }else{
+            location.reload();
+          }
+        })
+    }
+  const onclick = (index) => {
+      alert(index)
+    if(state2.friendList[index].user == 0)
+      state2.friendList[index].user =1
+    else
+      state2.friendList[index].user =0
+  }
+
     const open = () => {
 
         ElMessageBox.prompt('请输入要修改的昵称', '提示', {
@@ -264,10 +375,13 @@ setup(){
           });
       };
 return{
-  activeName,...toRefs(state),
+  activeName,
+  ...toRefs(state),
   open,
   ...toRefs(state2),
-  addFriend
+  addFriend,
+  onclick,
+  change
 }
 },
 components:{
