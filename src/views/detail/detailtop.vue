@@ -15,50 +15,38 @@
 <h4 style="color:#fff;margin-top:5.5%;">{{title.title}}</h4>
   </el-menu>
   <div style="width:50%"></div>
-  <el-badge
-      :value="$store.state.cartCount"
-      :max="60"
-      class="item"
-      style="width: 7%; background: rgb(18, 18, 18)">
-    <el-tabs >
+
+    <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)">
       <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>
       <!--           <router-link to="/shopcart"><a href="#"><span>愿望清单</span></a></router-link>-->
     </el-tabs>
 
-  </el-badge>
-  <el-badge
-      :value="$store.state.cartCount"
-      :max="60"
-      class="item"
-      style="width: 7%; background: rgb(18, 18, 18)">
-    <el-tabs >
+
+    <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)">
       <!--            <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>-->
       <router-link to="/wishcar"><a href="#"><span>心愿单</span></a></router-link>
     </el-tabs>
 
-  </el-badge>
 
-  <el-badge
-      :value="$store.state.cartCount"
-      :max="80"
-      class="item"
-      style="width: 7%; background: rgb(18, 18, 18)">
-    <el-tabs >
+
+
+    <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)" >
       <!--            <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>-->
       <router-link to="/orderlist"><a href="#"><span>订单</span></a></router-link>
     </el-tabs>
 
-  </el-badge>
+
   <div class="search">
-     
-  <el-input
-  placeholder="搜索"
-  v-model="input"
-  clearable
-  prefix-icon="el-icon-search"
- >
- <!-- <img src="https://sanegame.oss-cn-hangzhou.aliyuncs.com/%E6%90%9C%E7%B4%A2.png" style="width:10%;z-index:999999" alt=""> -->
-</el-input>
+
+    <el-input
+        placeholder="搜索"
+        v-model="input"
+        clearable
+        prefix-icon="el-icon-search"
+        :change="change(input)"
+        @keyup.enter.native="tosearch(search)"
+    >
+    </el-input>
 </div>
 </div>
     </div>
@@ -67,7 +55,9 @@
 
 <script>
 import { defineComponent, onMounted, ref,reactive,toRefs } from "vue";
+import { useRouter } from "vue-router";
 import {useStore} from 'vuex'
+import {searchGoods} from "../../network/category";
 export default defineComponent({
   name: "home",
   props:{
@@ -79,16 +69,37 @@ export default defineComponent({
       }
     },
   setup() {
-      const activeIndex = ref("2");
+    const router = useRouter();
+    const activeIndex = ref("2");
     const activeIndex2 = ref("2");
     const store = useStore();
+    const search = ref([]);
     onMounted(()=>{
         store.dispatch('updateCart');
       })
     const handleSelect = (key, keyPath) => {
       console.log(key, keyPath);
     };
-    return {activeIndex,activeIndex2,handleSelect,input: ref('')};
+    const change = (input) => {
+      searchGoods(input).then((res) => {
+        search.value = res;
+      });
+    };
+    const tosearch = (id) => {
+      // alert(search.value)
+      router.push({ path: "/category", query: { id: JSON.stringify(id) } });
+      setTimeout(() => {
+        router.go(0);
+      }, 200);
+    };
+    return {
+      activeIndex,
+      activeIndex2,
+      search,
+      handleSelect,
+      input: ref(''),
+      change,
+      tosearch};
   },
   components: {},
   methods: {},

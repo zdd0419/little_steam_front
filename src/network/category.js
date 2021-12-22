@@ -14,6 +14,6 @@ export function getCategoryGoods(order = 'sales', cid = 0) {
 }
 export function searchGoods(title) {
     return request({
-        url: '/api/goods?title=' + title,
+        url: '/mall/search?search=' + title,
     })
 }

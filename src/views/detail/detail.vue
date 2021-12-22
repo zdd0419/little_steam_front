@@ -22,13 +22,21 @@
           <h3 style="color: #fff; margin-top: 5.5%;width:200px">{{ detail.game_name }}</h3>
           <br />
           <h2>{{ detail.game_description }}</h2>
-          <p>{{ detail.OS }}</p>
-          <h2>游戏测评</h2>
+
+          <h2 style="color: #721e78">游戏测评</h2>
           <div style="height: 220px">
             <commentDetail :Gametags='tags'></commentDetail>
           </div>
-          <div class="commentPosition" >
+          <div class="commentPosition" style="height: auto">
             <commentList :commentList='list'></commentList>
+          </div>
+          <div class="content">
+            <h2 style="margin-top: 50px; color: #721e78">电脑配置要求</h2>
+            <p>操作系统：{{ detail.OS }}</p>
+            <p>处理器：{{ detail.CPU }}</p>
+            <p>内存：{{ detail.MainMemory }}</p>
+            <p>显卡：{{ detail.GPU }}</p>
+            <p>存储空间：{{ detail.StorageSpace }}</p>
           </div>
         </div>
         <el-affix :offset="160" class="shopping">
@@ -38,7 +46,10 @@
               display: flex;
               flex-direction: column;
             ">
-            <h1 style="color: #fff; text-align: left; margin: 5% 0 5% 0">￥{{ detail.price }}</h1>
+            <div style="display: flex">
+              <h1 style="background: green">{{ detail.discount != 100 ? "-" + (100-detail.discount) + "%": "" }}</h1>
+              <h2 style="color: #fff; text-align: left; margin:12% 0 5% 0;">￥{{ detail.price }}</h2>
+            </div>
             <div class="buynow" @click="gotoBuy(id)">
               {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
             </div>
@@ -64,15 +75,21 @@
             </div>
             <div class="container" style="margin:5px 0; width:100%; text-align: left">
               <div v-for="item in friends_add_wishlist" :key="item.user_id" style="margin-right: 8px">
-                <el-avatar :src="'http://127.0.0.1:8000' + item.user_icon" style="width:auto;height:100%"></el-avatar>
+                <el-avatar :src="'http://127.0.0.1:8000' + item.user_icon" style="width:auto;height:40px;"></el-avatar>
               </div>
             </div>
             <div class="container" style="margin:5px 0; width:100%; text-align: left">
               <h4 style="color: #fff">有以下好友把拥有该游戏</h4>
             </div>
-            <div class="container" style="margin:5px 0; width:100%; text-align: left">
+            <div style="margin:5px 0; width:100%; text-align: left">
               <div v-for="item in friend_have_game" :key="item.beneficiary.user_id" style="margin-right: 8px">
-                <el-avatar :src="'http://127.0.0.1:8000' + item.beneficiary.user_icon" style="width:auto;height:100%"></el-avatar>
+                <div class="container" style="margin-left: 0; margin-bottom: 5px">
+                  <el-avatar :src="'http://127.0.0.1:8000' + item.beneficiary.user_icon" style="width:auto;height:40px; margin-right: 10px"></el-avatar>
+                  <div>
+                    <h3 style="color: white">{{item.beneficiary.user_name}}</h3>
+                    <p style="color: white">游戏时长:{{item.game_time}}h</p>
+                  </div>
+                </div>
               </div>
             </div>
         </div></el-affix>

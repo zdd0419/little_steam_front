@@ -36,8 +36,10 @@
                 border-radius: 5px;
                 padding:5px;">{{ item.category}}</span>
             </el-checkbox>
+            <span><el-input v-model="mytag" style="width: 20%;margin-left: 10px" placeholder="请输入自定义标签"></el-input></span>
           </el-checkbox-group >
-          <span><el-input v-model="mytag" style="width: 30%" placeholder="请输入自定义标签"></el-input></span>
+
+
 <!--          <span><el-button type="primary">提交</el-button></span>-->
         </div>
 
@@ -68,7 +70,7 @@ setup(props){
     tagList: [],
     result:[], //id数组
     user: {}, //user详细信息
-    radio: 0,
+    radio: -1,
     textarea:'',
     mytag:'',
     hotTags:[]
@@ -81,20 +83,26 @@ setup(props){
     })
   }
   const saveComment = () => {
-    alert("----comment-----")
-    console.log(state.hotTags)
-    gameComment(props.Gametags[0].game, {
-      "user_id":window.localStorage.getItem("user_id"),
-      "comment_type":state.radio,
-      'comment_content': state.textarea}).then(res=>{
-
-      });
-    state.hotTags.forEach(sendEachTag)
-    gameTag({
-      "user_id":window.localStorage.getItem("user_id"),
-      "game_id": props.Gametags[0].game,
-      "category": state.mytag
-    })
+    if(state.radio === -1){
+      alert("请选择评论类型：推荐或是不推荐")
+    }else{
+      if(state.textarea.replace(/\s*/g,"") === ''){
+        alert("请输入评论内容")
+      }else{
+        gameComment(props.Gametags[0].game, {
+          "user_id":window.localStorage.getItem("user_id"),
+          "comment_type":state.radio,
+          'comment_content': state.textarea}).then(res=>{
+          init()
+        });
+        state.hotTags.forEach(sendEachTag)
+        gameTag({
+          "user_id":window.localStorage.getItem("user_id"),
+          "game_id": props.Gametags[0].game,
+          "category": state.mytag
+        })
+      }
+    }
 
   }
   const init = () => {

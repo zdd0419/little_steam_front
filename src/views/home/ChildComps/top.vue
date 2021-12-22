@@ -15,42 +15,29 @@
           active-text-color="#D351E1"
         >
           <el-menu-item index="1" @click="tohome">探索</el-menu-item>
-          <el-menu-item index="2" @click="toabout">浏览</el-menu-item>
+<!--          <el-menu-item index="2" @click="toabout">浏览</el-menu-item>-->
         </el-menu>
-        <el-badge
-          :value="$store.state.cartCount"
-          :max="60"
-          class="item"
-          style="width: 7%; background: rgb(18, 18, 18)">
-          <el-tabs >
+
+          <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)">
             <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>
 <!--           <router-link to="/shopcart"><a href="#"><span>愿望清单</span></a></router-link>-->
           </el-tabs>
 
-        </el-badge>
-        <el-badge
-            :value="$store.state.cartCount"
-            :max="60"
-            class="item"
-            style="width: 7%; background: rgb(18, 18, 18)">
-          <el-tabs >
+
+
+          <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)" >
 <!--            <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>-->
             <router-link to="/wishcar"><a href="#"><span>心愿单</span></a></router-link>
           </el-tabs>
 
-        </el-badge>
 
-        <el-badge
-            :value="$store.state.cartCount"
-            :max="80"
-            class="item"
-            style="width: 7%; background: rgb(18, 18, 18)">
-          <el-tabs >
+
+          <el-tabs class="item" style="width: 7%; background: rgb(18, 18, 18)">
             <!--            <router-link to="/shopcart"><a href="#"><span>购物车</span></a></router-link>-->
             <router-link to="/orderlist"><a href="#"><span>订单</span></a></router-link>
           </el-tabs>
 
-        </el-badge>
+
         <div class="search">
           <el-input
             placeholder="搜索"
@@ -85,10 +72,11 @@ export default defineComponent({
     const search = ref([]);
     const change = (input) => {
       searchGoods(input).then((res) => {
-        search.value = res.goods.data;
+        search.value = res;
       });
     };
     const tosearch = (id) => {
+      // alert(search.value)
       router.push({ path: "/category", query: { id: JSON.stringify(id) } });
       setTimeout(() => {
         router.go(0);
@@ -120,6 +108,15 @@ export default defineComponent({
 });
 </script>
 <style scoped lang='scss'>
+.el-tabs__item:hover {
+  color: orange;
+  background-color: orange ;
+}
+.el-tabs__item.is-active {
+  color: orange;
+  background-color: orange;
+}
+
 .top {
   position: fixed;
   top: 6.3%;

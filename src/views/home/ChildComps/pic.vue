@@ -16,7 +16,10 @@
     <div class="content" style="width: 850px">
       <span>{{ detail.game_name }}</span>
       <p>{{ detail.game_description }}</p>
-      <h4>{{ detail.price != 0 ? "￥" + detail.price : "免费" }}</h4>
+      <div style="display: flex">
+        <h2 style="background: green">{{ detail.discount != 100 ? "-" + (100-detail.discount) + "%": "" }}</h2>
+        <h3 style="margin-top: 10px">{{ detail.price != 0 ? "￥" + detail.price * detail.discount * 0.01: "免费" }}</h3>
+      </div>
       <div class="shopping">
         <div class="buynow" @click="gotodetail(detail.game)" style="width: 100px">
           {{ detail.price != 0 ? "立即购买" : "免费游玩" }}
@@ -72,39 +75,42 @@ export default {
 
      }
      //原来的添加到购物车
-     const handleAddCart = (id) => {
+    const handleAddCart = (id) => {
        addCart({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
-         if (res.status == "201" || res.status == "204") {
-           //设置store中cartCount
-           store.dispatch("updateCart");
-         }
-       });
-      // ElMessage({
-      //       showClose: true,
-      //       message: "添加购物车成功！！",
-      //       type: "success",
-      //     })
-    };
+         ElMessage({
+           showClose: true,
+           message: "添加购物车成功！！",
+           type: "success",
+         })}).catch(
+           ElMessage({
+             showClose: true,
+             message: "该游戏已在购物车中",
+             type: "error",
+           })
+       )
+  };
     //最新添加到心愿单
     const handleAddWish=(id)=>{
-      ElMessage({
-        showClose: true,
-        message: "添加心愿单成功！！",
-        type: "success",
-      });
       addWish({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
-        if (res.status == "201" || res.status == "204") {
-          //设置store中cartCount
-          store.dispatch("updateWish");
-
-        }
+        ElMessage({
+          showClose: true,
+          message: "添加心愿单成功！！",
+          type: "success",
+        })
+      }).catch(reason => {
+        ElMessage({
+          showClose: true,
+          message: "该游戏已在心愿单中",
+          type: "error",
+        })
       });
     }
     return { logo, init ,gotodetail,handleAddCart,handleAddWish};
-  },
+
+},
   components: {},
   methods: {},
-};
+}
 </script>
 <style scoped lang="scss">
 .pic {

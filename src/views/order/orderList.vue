@@ -3,7 +3,7 @@
     <div class="container" v-for="item in orderList" :key="item.game.game">
       <img :src="'http://127.0.0.1:8000' + item.game.surface" alt="" />
       <div class="content">
-        <span><h2>{{ item.game.game_name }}</h2></span>
+        <span><h3>{{ item.game.game_name }}</h3></span>
         <span><h6>买给用户：{{ item.beneficiary}}</h6></span>
         <span><h6>下单时间：{{ item.order_time}}</h6></span>
         <div class="price">
@@ -72,7 +72,7 @@ export default {
   .content {
     width: 90%;
     height: 30%;
-    margin-top: 3%;
+    margin-top: 1%;
 
     display: flex;
     .price {
