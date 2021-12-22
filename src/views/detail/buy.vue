@@ -55,11 +55,9 @@ export default {
     onMounted(() => {
           // id.value = route.query.id;
           data.id = route.query.id;
-          alert("buy"+data.id)
     });
 
     const gotoPay = (id, bene_id) => {
-      alert("gotopay"+id.value)
       router.push({ path: "/pay",query: {id,bene_id} });
 
       setTimeout(() => {
@@ -72,7 +70,6 @@ export default {
       //   message: "跳转成功！！",
       //   type: "success",
       // });
-      alert('gotofriend'+id.value)
       router.push({ path: "/denote", query: {id}});
       setTimeout(() => {
         router.go(0);

@@ -96,7 +96,6 @@ export default {
       state.id = route.query.id;
       bene_id.value = route.query.bene_id;
       data.credit_balance = window.localStorage.getItem("credit_balance")
-      alert('pay.vue' + state.id)
     });
     const confirmPay = () => {
       state.buydata.beneficiary_id = bene_id.value;
@@ -107,7 +106,6 @@ export default {
         state.buydata.method = "支付宝"
       if(data.radio == 9 )
         state.buydata.method = "钱包"
-      alert('confirmpay'+state.id)
       // alert(state.buydata.beneficiary_id)
       buyGame(state.id, state.buydata ).then((res) => {
 

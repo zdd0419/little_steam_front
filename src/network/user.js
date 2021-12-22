@@ -66,3 +66,11 @@ export function addfriend(user, data) {
     })
 }
 
+export function changeFriendinfo(user, data) {
+    return request({
+        url: '/users/'+ user+'/change' ,
+        method: 'put',
+        data
+    })
+}
+
