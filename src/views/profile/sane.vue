@@ -101,10 +101,11 @@ export default {
     const handleLogin = () => {
       //先验证 在提交
       login(loginUser.value).then((res) => {
-          console.log(res.id);
-          
+          alert(res.id);
+        alert(res.user_credit_balance);
         //将token保存本地
         window.localStorage.setItem("user_id", res.id);
+        window.localStorage.setItem("credit_balance", res.user_credit_balance);
         //在vuex islogin
         store.commit("setIsLogin", true);
         store.dispatch("updateCart");
@@ -112,7 +113,7 @@ export default {
         loginUser.password = "";
        
         setTimeout(() => {
-          router.push({path:'/'})
+          router.push({path:'/home'})
         }, 100);
        setTimeout(() => {
           router.go(0)

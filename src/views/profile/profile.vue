@@ -35,7 +35,7 @@
   <el-descriptions-item label="账号状态">
     <el-tag size="small" style="background:#67C23A;color:#fff;border:none">正常</el-tag>
   </el-descriptions-item>
-  <el-descriptions-item label="生日">{{user.created_at}}</el-descriptions-item>
+  <el-descriptions-item label="积分余额">{{user.user_credit_balance}}</el-descriptions-item>
   <el-descriptions-item label="等级（积分）">{{user.user_level}}({{user.user_credit}})</el-descriptions-item>
 
 </el-descriptions>
@@ -56,9 +56,19 @@
 
     <el-tab-pane label="我的游戏" name="third">
 
-      <div v-if= "gameList.length>0" class="category" v-for="item in gameList" :key="item.game_name" @click="gotodetail(item.game_name)">
-        <img :src="'http://127.0.0.1:8000' + item.surface" alt=""><div class="content"><p>{{ item.game_name }}</p></div>
+      <div v-if= "gameList.length>0" class="category" >
+        <div v-for="item in gameList" :key="item.game_name" style="height: 200px">
+          <gameHoueselist :gameinfoList="item" ></gameHoueselist>
+        </div>
       </div>
+<!--      <div v-if= "gameList.length>0" class="category" v-for="item in gameList" :key="item.game_name" @click="gotodetail(item.game_name)">-->
+<!--        <el-radio-group v-model="radio">-->
+<!--        <img :src="'http://127.0.0.1:8000' + item.surface" alt=""><div class="content"><p>{{ item.game_name }}</p></div>-->
+<!--          <el-radio :label="0" style="font-size: 30px">私密</el-radio>-->
+<!--          <el-radio :label="1" style="font-size: 30px">公开</el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </div>-->
+
 
       <el-empty v-if="gameList.length==0" style="margin-top:5%" description="您还没有购买游戏~">
       <router-link v-if="gameList.length==0" to="/home"><p style="color:#fff">请前往商店购买哦 →</p></router-link>
@@ -85,9 +95,14 @@
               width="180">
           </el-table-column>
           <el-table-column
+              prop="user_name"
+              label="用户名"
+              width="120">
+          </el-table-column>
+          <el-table-column
               prop="nickname"
               label="昵称"
-              width="180">
+              width="120">
           </el-table-column>
           <el-table-column
               prop="tag"
@@ -239,12 +254,13 @@
 </template>
 
 <script>
-import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend, changeFriendinfo} from "../../network/user";
+import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend, changeFriendinfo, setPrivateinfo} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
  import { ElMessageBox } from 'element-plus';
   import { ElMessage } from 'element-plus';
+  import gameHoueselist from './gameHoueselist.vue';
 import gettets from "@/store/gettets";
 export default {
   name:'',
@@ -260,6 +276,10 @@ setup(){
   const router = useRouter();
     const store = useStore();
 
+    const data = reactive({
+      radio: [],
+      items: []
+    })
 
     const state = reactive({
       user:{},
@@ -271,11 +291,13 @@ setup(){
         fname: ''
       },
       data2: {
+        user_name:'',
         fid:'',
         nickname:'',
         tag:''
       },
       sizeForm:{
+        user_name2:'',
         friend2:"",
         nickname2: '',
         tag2: ''
@@ -301,10 +323,15 @@ setup(){
         // console.log(JSON.parse(JSON.stringify(res.warehouse)))
         // alert(res.warehouse[1].game_name)
         state.gameList = res.warehouse;
+        state.gameList.forEach(function(item, index) {
+            data.radio[index] = item.set_private ? 1 :0
+        })
+
         // alert(state.gameList[1].game_name)
         // alert(state.user.game_cnt)
         // alert(state.gameList.length)
-        console.log(state)
+        console.log("data.radio")
+        console.log(data.radio)
 
       })
 
@@ -318,6 +345,10 @@ setup(){
       })
 
     })
+
+  const setPrivate = () =>{
+    setPrivateinfo(state.gameList[0].order_id)
+  }
 
     const addFriend = () => {
       state.data.fname = state.input
@@ -334,6 +365,7 @@ setup(){
         state.data2.fid = state.sizeForm.friend2;
         state.data2.nickname = state.sizeForm.nickname2;
         state.data2.tag = state.sizeForm.tag2;
+        state.data2.user_name = state.sizeForm.user_name2;
         changeFriendinfo(window.localStorage.getItem("user_id"), state.data2).then(res =>{
           if(res.error != "修改成功"){
             alert(res.error);
@@ -376,6 +408,7 @@ setup(){
       };
 return{
   activeName,
+  ...toRefs(data),
   ...toRefs(state),
   open,
   ...toRefs(state2),
@@ -385,7 +418,7 @@ return{
 }
 },
 components:{
-
+  gameHoueselist
 },
 methods:{
 

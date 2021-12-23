@@ -106,7 +106,7 @@ export default defineComponent({
     const tologout = () => {
       var id = 2
       //router.push({path:'/detail'})
-      router.push({ path: "/detail", query: { id } });
+      router.push({ path: "/login" });
       logout().then((res) => {
         // if (res.status == "204") {
         if (1) {
