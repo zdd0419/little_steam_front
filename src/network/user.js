@@ -81,3 +81,11 @@ export function setPrivateinfo(orderid, data) {
     })
 }
 
+export function deposit(userid, data) {
+    return request({
+        url: '/users/'+ userid + '/deposit' ,
+        method: 'post',
+        data
+    })
+}
+

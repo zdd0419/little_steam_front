@@ -101,7 +101,7 @@
           </el-table-column>
           <el-table-column
               prop="nickname"
-              label="昵称"
+              label="备注"
               width="120">
           </el-table-column>
           <el-table-column
@@ -206,11 +206,15 @@
         <br>
         <span style="color:#C0C4CC;font-size:15px" >钱包余额：{{user.user_balance}}</span>
         <br>
-
+        <br>
       </div>
+          <el-input-number v-model="deposit"  :min="50"></el-input-number>
+        <el-button style="background-color:white;
+   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%;margin-left: 1%" @click="toDeposit()">充值</el-button>
+
 
         <el-button style="background-color:white;
-   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%" @click="showbalance=true">查看余额日志</el-button>
+   background-color:rgba(0, 0, 0, 0) ;color:#fff;font-weight: 600;margin-top:3%; margin-left: 10%" @click="showbalance=true">查看余额日志</el-button>
 
           <el-table
               v-if = "showbalance"
@@ -254,7 +258,18 @@
 </template>
 
 <script>
-import {logout, getUser, putUserinfo, getWarehouse, getBalanceLog, friendID, addfriend, changeFriendinfo, setPrivateinfo} from "../../network/user";
+import {
+  logout,
+  getUser,
+  putUserinfo,
+  getWarehouse,
+  getBalanceLog,
+  friendID,
+  addfriend,
+  changeFriendinfo,
+  setPrivateinfo,
+  deposit
+} from "../../network/user";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted,ref,reactive,toRefs,} from "vue";
@@ -278,7 +293,11 @@ setup(){
 
     const data = reactive({
       radio: [],
-      items: []
+      items: [],
+      deposit:'',
+      depositdata:{
+        money: 0
+      }
     })
 
     const state = reactive({
@@ -341,13 +360,29 @@ setup(){
 
       getBalanceLog(window.localStorage.getItem("user_id")).then(res=> {
         state.BalanceLogData = res;
-        alert(res[0].source)
+        // alert(res[0].source)
       })
 
     })
 
   const setPrivate = () =>{
     setPrivateinfo(state.gameList[0].order_id)
+  }
+
+
+  const toDeposit = () =>{
+      data.depositdata.money = data.deposit
+    deposit(window.localStorage.getItem("user_id"), data.depositdata).then(res=>{
+      if(res.source != "充值"){
+        alert(res.source);
+      }else{
+        ElMessage({
+          type: 'success',
+          message: `充值成功`,
+        });
+        location.reload();
+      }
+    })
   }
 
     const addFriend = () => {
@@ -414,7 +449,8 @@ return{
   ...toRefs(state2),
   addFriend,
   onclick,
-  change
+  change,
+  toDeposit
 }
 },
 components:{

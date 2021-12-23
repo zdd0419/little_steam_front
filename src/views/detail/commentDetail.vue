@@ -56,6 +56,7 @@
 import {onMounted, reactive, toRefs} from "vue";
 import {getTags, gameComment, gameTag} from "../../network/detail";
 import {getUser} from "../../network/user";
+import {ElMessage} from "element-plus";
 export default {
   props: {
     Gametags: {
@@ -94,6 +95,12 @@ setup(props){
           "comment_type":state.radio,
           'comment_content': state.textarea}).then(res=>{
           init()
+        }).catch(res=>{
+          ElMessage({
+            showClose: true,
+            message: res,
+            type: "error",
+          });
         });
         state.hotTags.forEach(sendEachTag)
         gameTag({
