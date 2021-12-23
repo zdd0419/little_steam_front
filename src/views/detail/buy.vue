@@ -6,12 +6,12 @@
         <div class="title">
           <h1 style="text-align: left; font-size: 40px; color: #fff">
 <!--            {{ detail.title }}-->
-            游戏
+            购买游戏
           </h1>
         </div>
         <div class="content">
 <!--          {{detail.description}}-->
-          游戏内容
+
           <div class="button">
             <el-row>
               <el-button type="primary" plain @click="gotoPay(id, user_id)" >买给自己</el-button>

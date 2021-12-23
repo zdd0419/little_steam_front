@@ -105,6 +105,7 @@ setup(props){
             message: "未拥有该游戏",
             type: "error",
           })
+
         });
         init()
         location.reload()
