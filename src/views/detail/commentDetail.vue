@@ -56,6 +56,7 @@
 import {onMounted, reactive, toRefs} from "vue";
 import {getTags, gameComment, gameTag} from "../../network/detail";
 import {getUser} from "../../network/user";
+import {ElMessage} from "element-plus";
 export default {
   props: {
     Gametags: {
@@ -92,9 +93,21 @@ setup(props){
         gameComment(props.Gametags[0].game, {
           "user_id":window.localStorage.getItem("user_id"),
           "comment_type":state.radio,
-          'comment_content': state.textarea}).then(res=>{
-          init()
+          'comment_content': state.textarea}).then((res)=>{
+            ElMessage({
+            showClose: true,
+            message: "评论成功",
+            type: "success",
+            })
+        }).catch(error => {
+          ElMessage({
+            showClose: true,
+            message: "未拥有该游戏",
+            type: "error",
+          })
         });
+        init()
+        location.reload()
         state.hotTags.forEach(sendEachTag)
         gameTag({
           "user_id":window.localStorage.getItem("user_id"),
@@ -106,7 +119,6 @@ setup(props){
 
   }
   const init = () => {
-    alert(game_id)
     getTags(game_id).then((res) => {
       state.tagList = res;
       console.log(state.list);

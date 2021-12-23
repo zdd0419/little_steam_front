@@ -318,18 +318,10 @@ setup(){
       })
 
       getWarehouse(window.localStorage.getItem("user_id")).then(res=>{
-        // alert(res.warehouse)
-        // alert(JSON.parse(JSON.stringify(res.warehouse)))
-        // console.log(JSON.parse(JSON.stringify(res.warehouse)))
-        // alert(res.warehouse[1].game_name)
         state.gameList = res.warehouse;
         state.gameList.forEach(function(item, index) {
             data.radio[index] = item.set_private ? 1 :0
         })
-
-        // alert(state.gameList[1].game_name)
-        // alert(state.user.game_cnt)
-        // alert(state.gameList.length)
         console.log("data.radio")
         console.log(data.radio)
 
@@ -341,7 +333,6 @@ setup(){
 
       getBalanceLog(window.localStorage.getItem("user_id")).then(res=> {
         state.BalanceLogData = res;
-        alert(res[0].source)
       })
 
     })
@@ -375,7 +366,6 @@ setup(){
         })
     }
   const onclick = (index) => {
-      alert(index)
     if(state2.friendList[index].user == 0)
       state2.friendList[index].user =1
     else

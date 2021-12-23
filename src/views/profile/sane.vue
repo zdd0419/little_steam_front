@@ -101,8 +101,6 @@ export default {
     const handleLogin = () => {
       //先验证 在提交
       login(loginUser.value).then((res) => {
-          alert(res.id);
-        alert(res.user_credit_balance);
         //将token保存本地
         window.localStorage.setItem("user_id", res.id);
         window.localStorage.setItem("credit_balance", res.user_credit_balance);

@@ -53,8 +53,10 @@ export default {
     const router = useRouter();
 
     onMounted(() => {
+
           // id.value = route.query.id;
           data.id = route.query.id;
+
     });
 
     const gotoPay = (id, bene_id) => {
