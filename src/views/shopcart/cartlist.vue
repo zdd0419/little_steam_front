@@ -11,6 +11,12 @@
           <p>￥{{ item.price }}</p>
         </div>
       </div>
+      <div @click="gotoBuy(item.game)" style="width: 100px;margin-top: 25px">
+        <el-button type="success" icon="el-icon-shopping">立即购买</el-button>
+
+<!--        {{ item.price != 0 ? "立即购买" : "免费游玩" }}-->
+      </div>
+
       <el-button
         class="delete"
         type="primary"
@@ -43,6 +49,10 @@ export default {
   },
   name: "",
   setup() {
+
+    const gotoBuy = (id) => {
+      router.push({ path: "/buy", query: { id } });
+    };
       const fullscreenLoading = ref(false)
     const router = useRouter();
     const godetail = (id, title) => {
@@ -85,7 +95,8 @@ export default {
       deleteGood,
       godetail,
       ...toRefs(state),
-      fullscreenLoading
+      fullscreenLoading,
+      gotoBuy
     };
   },
   components: {},
@@ -135,10 +146,12 @@ export default {
     }
   }
   .delete {
-    height: 100%;
+    height: 45%;
     width: 4.5%;
     background: #721e78;
     border: none;
+    margin-top: 25px;
+    margin-left: 5px;
     img {
       width: 80%;
       height: auto;

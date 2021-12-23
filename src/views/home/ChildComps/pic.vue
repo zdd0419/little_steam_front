@@ -90,7 +90,7 @@ export default {
        )
   };
     //最新添加到心愿单
-    const handleAddWish=(id)=>{
+    const handleAddWish =(id)=>{
       addWish({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
         ElMessage({
           showClose: true,

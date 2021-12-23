@@ -157,10 +157,8 @@ const validatePass2 = (rule, value, callback) => {
       registerUser2.type = "register"
       registerUser2.name = registerUser.value.name
       registerUser2.password = registerUser.value.password
-      alert(registerUser2.name)
       //先验证 在提交
       register(registerUser2).then((res) => {
-        alert(registerUser2.name)
         console.log(res);
         registerUser.name="";
         registerUser.password = "";
