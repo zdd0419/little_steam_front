@@ -73,4 +73,11 @@ export function changeFriendinfo(user, data) {
         data
     })
 }
+export function setPrivateinfo(orderid, data) {
+    return request({
+        url: '/users/warehouse/'+ orderid ,
+        method: 'put',
+        data
+    })
+}
 

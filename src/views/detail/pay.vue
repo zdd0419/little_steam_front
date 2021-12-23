@@ -122,7 +122,7 @@ export default {
       });
       setTimeout(() => {
         router.go(0);
-      }, 1000);
+      }, 3000);
     };
     return{
       confirmPay,
