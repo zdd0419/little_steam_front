@@ -8,7 +8,7 @@
             style="position:relative;width: 67px; height: 33px;top:-50px"
           />
         </p>
-        <p>使用SANEGAME账户</p>
+        <p>使用STEAMGAME账户</p>
 
         <el-form
           ref="loginForm"
@@ -21,7 +21,7 @@
             <el-input
               v-model="loginUser.name"
               placeholder="Enter Email..."
-              
+
             ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
@@ -65,8 +65,8 @@ export default {
   setup() {
     const router = useRouter();
     const store = useStore();
-    
-    
+
+
     const loginUser = ref({
       type: "login",
       name: "",
@@ -101,8 +101,8 @@ export default {
     const handleLogin = () => {
       //先验证 在提交
       login(loginUser.value).then((res) => {
-          alert(res.id);
-        alert(res.user_credit_balance);
+        //   alert(res.id);
+        // alert(res.user_credit_balance);
         //将token保存本地
         window.localStorage.setItem("user_id", res.id);
         window.localStorage.setItem("credit_balance", res.user_credit_balance);
@@ -111,7 +111,7 @@ export default {
         store.dispatch("updateCart");
         loginUser.name = "";
         loginUser.password = "";
-       
+
         setTimeout(() => {
           router.push({path:'/home'})
         }, 100);
@@ -123,10 +123,10 @@ export default {
             message: '登录成功！！',
             type: 'success'
           })
-        
+
       });
-      
-         
+
+
 
     };
     return { handleLogin, loginUser, rules };

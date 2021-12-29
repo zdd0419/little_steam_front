@@ -76,7 +76,7 @@
             color: #fff;
             border: none;
           "
-          >获取客户端</el-button
+          ></el-button
         >
       </div>
     </el-menu>
@@ -104,9 +104,10 @@ export default defineComponent({
       }
     };
     const tologout = () => {
-      var id = 2
       //router.push({path:'/detail'})
-      router.push({ path: "/login" });
+      router.push({ path: "/register" });
+      window.localStorage.clear();
+      noLogin.value = true
       logout().then((res) => {
         // if (res.status == "204") {
         if (1) {

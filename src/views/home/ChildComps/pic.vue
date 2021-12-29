@@ -76,18 +76,13 @@ export default {
      }
      //原来的添加到购物车
     const handleAddCart = (id) => {
+      alert( window.localStorage.getItem("user_id"))
        addCart({ "user_id": window.localStorage.getItem("user_id"), "game_id":id }).then((res) => {
          ElMessage({
            showClose: true,
            message: "添加购物车成功！！",
            type: "success",
-         })}).catch(
-           ElMessage({
-             showClose: true,
-             message: "该游戏已在购物车中",
-             type: "error",
-           })
-       )
+         })})
   };
     //最新添加到心愿单
     const handleAddWish=(id)=>{

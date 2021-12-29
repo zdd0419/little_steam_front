@@ -95,7 +95,7 @@ export default {
     onMounted(() => {
       state.id = route.query.id;
       bene_id.value = route.query.bene_id;
-      data.credit_balance = window.localStorage.getItem("user_credit_balance")
+      data.credit_balance = window.localStorage.getItem("credit_balance")
     });
     const confirmPay = () => {
       state.buydata.beneficiary_id = bene_id.value;

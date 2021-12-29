@@ -8,7 +8,7 @@
             style="position:relative;width: 67px; height: 33px;top:-50px"
           />
         </p>
-        <p>使用SANEGAME账户</p>
+        <p>使用STEAMGAME账户</p>
 
         <el-form
           ref="loginForm"
@@ -64,7 +64,7 @@
   </el-form>
           </div>
           <div class="tiparea">
-            <p>忘记密码？ <a>立即找回</a></p>
+<!--            <p>忘记密码？ <a>立即找回</a></p>-->
           </div>
         </el-form>
       </div>
@@ -157,28 +157,29 @@ const validatePass2 = (rule, value, callback) => {
       registerUser2.type = "register"
       registerUser2.name = registerUser.value.name
       registerUser2.password = registerUser.value.password
-      alert(registerUser2.name)
+      // alert(registerUser2.name)
       //先验证 在提交
       register(registerUser2).then((res) => {
-        alert(registerUser2.name)
+        // alert(registerUser2.name)
         console.log(res);
         registerUser.name="";
         registerUser.password = "";
         registerUser.password_confirmation = "";
+
         setTimeout(() => {
           router.push({path:'/login'})
         }, 500);
        setTimeout(() => {
           router.go(0)
         }, 600);
-
+        ElMessage({
+          showClose: true,
+          message: '注册成功！！',
+          type: 'success'
+        })
       });
 
-          ElMessage({
-            showClose: true,
-            message: '注册成功！！',
-            type: 'success'
-          })
+
 
     };
     return { handleRegister, registerUser, registerRules };

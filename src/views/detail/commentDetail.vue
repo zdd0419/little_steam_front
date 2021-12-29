@@ -94,11 +94,15 @@ setup(props){
           "user_id":window.localStorage.getItem("user_id"),
           "comment_type":state.radio,
           'comment_content': state.textarea}).then(res=>{
-          init()
-        }).catch(res=>{
           ElMessage({
             showClose: true,
-            message: res,
+            message: "评论成功",
+            type: "success",
+          });
+        }).catch(error=>{
+          ElMessage({
+            showClose: true,
+            message: "评论失败",
             type: "error",
           });
         });

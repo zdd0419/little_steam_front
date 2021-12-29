@@ -43,7 +43,7 @@
 
             <el-form-item label="选择好友" size="medium">
               <el-select v-model="sizeForm.denote" placeholder="请选择好友">
-                <el-option v-for="item in friendList" :label="item.nickname" :value="item.friend"></el-option>
+                <el-option v-for="item in friendList" :label="item.user_name" :value="item.friend"></el-option>
 <!--                <el-option label="区域二" value="beijing"></el-option>-->
               </el-select>
             </el-form-item>
